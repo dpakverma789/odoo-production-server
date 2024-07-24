@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hospital_patient,hospital_patient,model_hospital_patient,,1,1,1,1
+access_hospital_appointment,hospital_appointment,model_hospital_appointment,,1,1,1,1
+access_hospital_doctor,hospital_doctor,model_hospital_doctor,,1,1,1,1
+access_patient_class_status,patient_class_status,model_patient_class_status,,1,1,1,1
+access_appointment_rejection_reason,appointment_rejection_reason,model_appointment_rejection_reason,group_hospital_doctor,1,1,1,1
+access_hospital_appointment_request_wizard,hospital_appointment_request_wizard,model_hospital_appointment_request_wizard,,1,1,1,1

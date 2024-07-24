@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- form view  -->
+    <record id="hospital_appointment_request_wizard" model="ir.ui.view">
+        <field name="name">hospital.appointment.request.wizard</field>
+        <field name="model">hospital.appointment.request.wizard</field>
+        <field name="arch" type="xml">
+            <form string="hospital_appointment_request">
+                <group>
+                    <field name="rejection_reason" options="{'no_create_edit': True,'no_create': True}"
+                    domain="[('rejection_reason', '!=', 'Discard by Bot')]"/>
+                </group>
+                <footer>
+                    <button name="reject_appointment" confirm="Are you sure to Reject?"
+                            string="Reject" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- action  -->
+    <record id="action_hospital_appointment_request_wizard" model="ir.actions.act_window">
+        <field name="name">Rejection Reason</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.appointment.request.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="hospital_appointment_request_wizard"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

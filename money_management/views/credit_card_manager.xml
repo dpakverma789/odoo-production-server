@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree  -->
+    <record id="credit_card_manager_tree" model="ir.ui.view">
+        <field name="name">credit.card.manager.tree</field>
+        <field name="model">credit.card.manager</field>
+        <field name="arch" type="xml">
+            <tree string="credit_card_manager_tree_view"
+                  decoration-muted="payment_state=='done'"
+                  sample="1">
+                <field name="name"/>
+                <field name="bank_card_id"/>
+                <field name="amount"/>
+                <field name="due_date"/>
+                <field name="paid_date"/>
+                <field name="payment_state" widget="badge" decoration-success="payment_state=='done'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form  -->
+    <record id="credit_card_manager_form" model="ir.ui.view">
+        <field name="name">credit.card.manager.form</field>
+        <field name="model">credit.card.manager</field>
+        <field name="arch" type="xml">
+            <form string="credit_card_manager_form_view">
+                <header>
+                    <field name="payment_state" widget="statusbar"/>
+                    <button name="confirm_payment" string="Mark as Paid"
+                            confirm="Are you sure?"
+                            type="object" class="oe_highlight"
+                            attrs="{'invisible':[('payment_state','in',('done'))]}"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Paid"
+                            bg_color="bg-success"
+                            attrs="{'invisible':[('payment_state','in',('pending'))]}"/>
+                    <group>
+                        <group>
+                            <field name="name" attrs="{'readonly':[('payment_state','in',('done'))]}"/>
+                            <field name="bank_card_id" attrs="{'readonly':[('payment_state','in',('done'))]}"/>
+                            <field name="due_date" attrs="{'readonly':[('payment_state','in',('done'))]}"/>
+                            <field name="paid_date" attrs="{'readonly':[('payment_state','in',('done'))]}"/>
+                            <field name="amount" widget="monetary"
+                                   attrs="{'readonly':[('payment_state','in',('done'))]}"/>
+                            <field name="currency_id" attrs="{'readonly':[('payment_state','in',('done'))]}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View  -->
+    <record id="credit_card_manager_search" model="ir.ui.view">
+        <field name="name">credit.card.manager.search</field>
+        <field name="model">credit.card.manager</field>
+        <field name="arch" type="xml">
+            <search string="credit_card_manager_search">
+                <field name="name"/>
+                <field name="amount"/>
+                <field name="due_date"/>
+                <field name="paid_date"/>
+                <field name="payment_state"/>
+                <group expand="0" string="Group By">
+                    <filter name="payment_state" string="Payment State" context="{'group_by':'payment_state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action  -->
+    <record id="credit_card_manager_action" model="ir.actions.act_window">
+        <field name="name">Credit Card Manager</field>
+        <field name="res_model">credit.card.manager</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Your Credit Card Transaction!
+            </p>
+        </field>
+    </record>
+
+    <!-- Credit Card Manager menu  -->
+    <menuitem id="credit_card_manager_menu" name="Credit Card" parent="money_management_root_menu"
+              action="credit_card_manager_action"/>
+</odoo>

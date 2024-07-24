@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View   -->
+    <record id="hospital_patient_tree" model="ir.ui.view">
+        <field name="name">hospital.patient.tree</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <tree string="hospital_patient_details" sample="1">
+                <field name="name"/>
+                <field name="age"/>
+                <field name="contact"/>
+                <field name="gender"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form view -->
+    <record id="hospital_patient_form" model="ir.ui.view">
+        <field name="name">hospital.patient.form</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <form string="hospital_patient_details">
+                <sheet>
+                    <field name="image" widget='image' class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="age"/>
+                            <field name="contact"/>
+                            <field name="email"/>
+                            <field name="gender"/>
+                            <field name="patient_class_status_ids" widget="many2many_tags"
+                                   options="{'color_field': 'color', 'no_create_edit': True, 'no_create': True}"/>
+                            <field name="hide_rejection_reason" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Appointment List" name="patient_notebook">
+                            <field name="appointment_ids">
+                                <tree editable="top">
+                                    <field name="name" readonly="1"/>
+                                    <field name="patient_id"/>
+                                    <field name="doctor_id"/>
+                                    <field name="specialization"/>
+                                    <field name="appointment_time"/>
+                                    <field name="appointment_state" widget="badge"
+                                           decoration-success="appointment_state=='Confirmed'"
+                                           decoration-danger="appointment_state=='Rejected'"
+                                           decoration-muted="appointment_state=='Done'"/>
+                                    <!-- parent here is current model which is hospital.patients        -->
+                                    <field name="rejection_id"
+                                           attrs="{'column_invisible': [('parent.hide_rejection_reason', '=', True)]}"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="hospital_patient_search" model="ir.ui.view">
+        <field name="name">hospital.patient.search</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <search string="hospital_patient_search">
+                <field name="name"/>
+                <separator/>
+                <filter name="Male" string="Male" domain="[('gender', '=', 'male')]"/>
+                <separator/>
+                <filter name="Female" string="Female" domain="[('gender', '=', 'female')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="gender" string="Gender" context="{'group_by':'gender'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="hospital_patient_kanban" model="ir.ui.view">
+        <field name="name">hospital.patient.kanban</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" sample="1">
+                <field name="name"/>
+                <field name="age"/>
+                <field name="contact"/>
+                <field name="gender"/>
+                <field name="id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="float-left">
+                                <img t-att-src="kanban_image('hospital.patient', 'image', record.id.raw_value)"
+                                     t-att-title="image" t-att-alt="image"
+                                     class="rounded oe_kanban_avatar o_image_24_cover"
+                                     style="width:70px!important;height:70px!important"/>
+                            </div>
+                            <div class="row mb4">
+                                <strong class="col-6">
+                                    <field name="name"/>
+                                </strong>
+                                <strong class="col-6 text-right">
+                                    <i class="fa fa-calendar" aria-label="Date" role="img" title="Date"/>
+                                    <field name="age"/>
+                                </strong>
+                                <div class="col-10">
+                                    <field name="gender"/>
+                                </div>
+                                <div class="col-6">
+                                    <field name="contact"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Action  -->
+    <record id="hospital_patient_action" model="ir.actions.act_window">
+        <field name="name">Hospital Patient</field>
+        <field name="res_model">hospital.patient</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+        (0, 0, {'view_mode': 'tree', 'view_id': ref('hospital_patient_tree')}),
+        (0, 0, {'view_mode': 'kanban', 'view_id': ref('hospital_patient_kanban')}),
+        (0, 0, {'view_mode': 'form', 'view_id': ref('hospital_patient_form')})]"/>
+        <!--        <field name="context">{'default_contact':'1234567890'}</field>-->
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create First Patient Details!
+            </p>
+        </field>
+    </record>
+</odoo>

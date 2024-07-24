@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- root menu  -->
+    <menuitem id="hospital_root_menu" name="Hospital"/>
+
+    <!-- Dashboard menu  -->
+    <menuitem id="hospital_dashboard_menu" name="Dashboard" parent="hospital_root_menu"
+    action="hospital_dashboard" sequence="1"/>
+
+    <!-- Appointment Menu  -->
+    <menuitem id="hospital_appointment_menu" name="Appointments" parent="hospital_root_menu"
+              action="hospital_appointment_action"/>
+
+    <!-- Doctors menu  -->
+    <menuitem id="hospital_doctor_menu" name="Doctors" parent="hospital_root_menu" action="hospital_doctor_action"/>
+
+    <!-- Patients menu  -->
+    <menuitem id="hospital_patient_menu" name="Patients" parent="hospital_root_menu" action="hospital_patient_action"/>
+
+    <!-- Rejection Reason menu  -->
+    <menuitem id="hospital_rejection_reason_menu" name="Rejection Reasons"
+              parent="hospital_root_menu" action="rejection_reason_action"/>
+</odoo>

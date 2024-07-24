@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- form view  -->
+    <record id="rejection_reason_form" model="ir.ui.view">
+        <field name="name">appointment.rejection.reason.form</field>
+        <field name="model">appointment.rejection.reason</field>
+        <field name="arch" type="xml">
+            <form string="rejection_reason_details">
+                <sheet>
+                    <group>
+                        <field name="rejection_reason" placeholder="Your Rejection Reason"
+                        help="This will help to reject the appointment with a valid reason."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- tree view  -->
+    <record id="rejection_reason_tree" model="ir.ui.view">
+        <field name="name">appointment.rejection.reason.tree</field>
+        <field name="model">appointment.rejection.reason</field>
+        <field name="arch" type="xml">
+            <tree string="rejection_reason_details" sample="1">
+                <field name="rejection_reason"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- action  -->
+    <record id="rejection_reason_action" model="ir.actions.act_window">
+        <field name="name">Rejection Reason</field>
+        <field name="res_model">appointment.rejection.reason</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create First Rejection Reason!
+            </p>
+        </field>
+    </record>
+
+    <!-- default rejection reason  -->
+    <record id="rejected_by_bot" model="appointment.rejection.reason">
+        <field name="rejection_reason">Discard by Bot</field>
+    </record>
+
+</odoo>

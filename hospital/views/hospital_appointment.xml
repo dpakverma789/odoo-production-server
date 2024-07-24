@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View  -->
+    <record id="hospital_appointment_tree" model="ir.ui.view">
+        <field name="name">hospital.appointment.tree</field>
+        <field name="model">hospital.appointment</field>
+        <field name="arch" type="xml">
+            <tree string="hospital_appointment_details"
+                  decoration-success="appointment_state=='Confirmed'"
+                  decoration-danger="appointment_state=='Rejected'"
+                  decoration-muted="appointment_state=='Done'"
+                  sample="1"
+                  multi_edit="1">
+                <header>
+                    <button name="unlink" string="Remove Rejected Appointment" type="object" class="oe_highlight"/>
+                </header>
+                <field name="name" readonly="1"/>
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="specialization"/>
+                <field name="appointment_time"/>
+                <field name="appointment_state" widget="badge"
+                       decoration-success="appointment_state=='Confirmed'"
+                       decoration-danger="appointment_state=='Rejected'"
+                       decoration-muted="appointment_state=='Done'"/>
+                <field name="rejection_id"/>
+                <button name="confirm_appointment"
+                            string=" "
+                            confirm="Are you sure to confirm?"
+                            groups="hospital.group_hospital_doctor"
+                            type="object" class="fa fa-check btn-success"
+                            attrs="{'invisible':[('appointment_state','in',('Confirmed','Rejected','Done','Expired'))]}"/>
+                <button name="rejection_reason_wizard" class="fa fa-times btn-danger"
+                            string=" "
+                            type="object" groups="hospital.group_hospital_doctor"
+                            attrs="{'invisible':[('appointment_state','in',('Confirmed','Rejected','Done','Expired'))]}"/>
+                <button name="print_patient_appointment_card"
+                        string=" "
+                        type="object" class="fa fa-arrow-down btn-primary"
+                        attrs="{'invisible':[('appointment_state','in',('Draft','Rejected','Expired'))]}"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View  -->
+    <record id="hospital_appointment_form" model="ir.ui.view">
+        <field name="name">hospital.appointment.form</field>
+        <field name="model">hospital.appointment</field>
+        <field name="arch" type="xml">
+            <form string="hospital_appointment_details">
+                <header>
+                    <button name="confirm_appointment" string="Confirm"
+                            confirm="Are you sure to confirm?"
+                            groups="hospital.group_hospital_doctor"
+                            type="object" class="oe_highlight"
+                            attrs="{'invisible':[('appointment_state','in',('Confirmed','Rejected','Done','Expired'))]}"/>
+<!--                    <button name="%(hospital.action_hospital_appointment_request_wizard)d" string="Reject"-->
+<!--                            type="action" groups="hospital.group_hospital_doctor"-->
+<!--                            attrs="{'invisible':[('appointment_state','in',('Confirmed','Rejected'))]}"/>-->
+                    <button name="rejection_reason_wizard" string="Reject"
+                            type="object" groups="hospital.group_hospital_doctor"
+                            attrs="{'invisible':[('appointment_state','in',('Confirmed','Rejected','Done','Expired'))]}"/>
+                    <button name="print_patient_appointment_card"
+                            string="Print &#38; Send Email Appointment Card"
+                            type="object" class="oe_highlight"
+                            attrs="{'invisible':[('appointment_state','in',('Draft','Rejected'))]}"/>
+                    <button name="send_appointment_on_whatsapp" string="Send On WhatsApp"
+                            type="object" class="fa fa-whatsapp oe_highlight"
+                            attrs="{'invisible':[('appointment_state','in',('Draft','Rejected'))]}"/>
+                    <field name="appointment_state" widget="statusbar" statusbar_visible="Draft,Confirmed"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Confirmed"
+                            bg_color="bg-success"
+                            attrs="{'invisible':[('appointment_state','in',('Draft','Rejected','Done','Expired'))]}"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <field name="image" widget='image' class="oe_avatar"/>
+                    <group>
+                        <group>
+                            <field name="patient_id"
+                                   options="{'no_create_edit': True,'no_create': True}"
+                                   attrs="{'readonly': [('appointment_state','!=','Draft')]}"/>
+                            <field name="patient_class_status_ids" widget="many2many_tags"
+                                   options="{'color_field': 'color'}"/>
+                            <field name="gender" readonly="1" force_save="1"/>
+                            <field name="doctor_id"
+                                   options="{'no_create_edit': True,'no_create': True}"
+                                   attrs="{'readonly': [('appointment_state','!=','Draft')]}"/>
+                            <field name="specialization" readonly="1"/>
+                            <field name="appointment_time"
+                                   attrs="{'readonly': [('appointment_state','!=','Draft')]}"/>
+                            <field name="rejection_id" options="{'no_create_edit': True,'no_create': True}"
+                             attrs="{'invisible':[('rejection_id','=',False)], 'readonly': [('appointment_state','!=','Draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="patient_description"
+                                   attrs="{'readonly': [('appointment_state','!=','Draft')]}"/>
+                            <field name="patient_medicine"
+                                   attrs="{'readonly': [('appointment_state','!=','Draft')]}"/>
+                            <field name="send_email" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Kanban -->
+    <record id="hospital_appointment_kanban" model="ir.ui.view">
+        <field name="name">hospital.appointment.kanban</field>
+        <field name="model">hospital.appointment</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="name"/>
+                <field name="image"/>
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="appointment_time"/>
+                <field name="appointment_state"/>
+                <field name="id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="float-left">
+                                <img t-att-src="kanban_image('hospital.appointment', 'image', record.id.raw_value)"
+                                     t-att-title="image" t-att-alt="image"
+                                     class="rounded oe_kanban_avatar o_image_24_cover"
+                                     style="width:70px!important;height:70px!important"/>
+                            </div>
+                            <div class="row mb4">
+                                <strong class="col-6">
+                                    <field name="name"/>
+                                </strong>
+                                <strong class="col-6 text-right">
+                                    <i class="fa fa-calendar" aria-label="Date" role="img" title="Date"/>
+                                    <field name="appointment_time"/>
+                                </strong>
+                                <div class="col-6">
+                                    <field name="patient_id"/>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <field name="appointment_state" widget="badge"
+                                           decoration-success="appointment_state=='Confirmed'"
+                                           decoration-danger="appointment_state=='Rejected'"
+                                           decoration-muted="appointment_state=='Done'"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Search View  -->
+    <record id="hospital_appointment_search" model="ir.ui.view">
+        <field name="name">hospital.appointment.search</field>
+        <field name="model">hospital.appointment</field>
+        <field name="arch" type="xml">
+            <search string="hospital_appointment_search">
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="appointment_state"/>
+                <filter name="Confirmed" string="Confirmed"
+                        domain="[('appointment_state', '=', 'Confirmed')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="patient_id" string="Patient Name" context="{'group_by':'patient_id'}"/>
+                    <filter name="doctor_id" string="Doctor Name" context="{'group_by':'doctor_id'}"/>
+                    <filter name="appointment_state" string="State" context="{'group_by':'appointment_state'}"/>
+                </group>
+                <searchpanel>
+                    <field name="appointment_state" string="State" enable_counters="1"/>
+                    <field name="doctor_id" string="Doctor" enable_counters="1"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <!-- Graph View  -->
+    <record id="hospital_appointment_graph" model="ir.ui.view">
+        <field name="name">hospital.appointment.graph</field>
+        <field name="model">hospital.appointment</field>
+        <field name="arch" type="xml">
+            <graph string="hospital_appointment_graph">
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="appointment_time"/>
+                <field name="appointment_state"/>
+                <field name="rejection_id"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Calender View  -->
+    <record id="hospital_appointment_calendar" model="ir.ui.view">
+        <field name="name">hospital.appointment.calendar</field>
+        <field name="model">hospital.appointment</field>
+        <field name="arch" type="xml">
+            <calendar date_start="appointment_time" string="Hospital Appointment" color="patient_id">
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="appointment_time"/>
+                <field name="appointment_state"/>
+                <field name="rejection_id"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Action window View  -->
+    <record id="hospital_appointment_action" model="ir.actions.act_window">
+        <field name="name">Hospital Appointment</field>
+        <field name="res_model">hospital.appointment</field>
+        <field name="view_mode">tree,form,kanban,graph,calendar</field>
+<!--        <field name="domain">[('appointment_state', '=', 'Expired')]</field>-->
+        <field name="context">{
+            'default_patient_description':'No Description',
+            'default_patient_medicine':'No Medicine',
+            'search_default_Confirmed':1
+            }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create First Appointment!
+            </p>
+        </field>
+    </record>
+
+</odoo>

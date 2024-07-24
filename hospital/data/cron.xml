@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="appointment_image_update_cron" model="ir.cron">
+        <field name="name">Update: Image</field>
+        <field name="model_id" ref="model_hospital_appointment"/>
+        <field name="state">code</field>
+        <field name="code">model.update_image()</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+        <field name="numbercall">-1</field>
+        <field name="active">False</field>
+    </record>
+
+     <record id="confirmed_appointment_expire_cron" model="ir.cron">
+        <field name="name">Expire: Confirmed Appointment</field>
+        <field name="model_id" ref="model_hospital_appointment"/>
+        <field name="state">code</field>
+        <field name="code">model.expire_appointment()</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="True"/>
+        <field name="active">True</field>
+    </record>
+
+    <record id="draft_appointment_discard_cron" model="ir.cron">
+        <field name="name">Discard: Draft Appointment</field>
+        <field name="model_id" ref="model_hospital_appointment_request_wizard"/>
+        <field name="state">code</field>
+        <field name="code">model.reject_appointment()</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="True"/>
+        <field name="active">True</field>
+    </record>
+</odoo>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="gymwale_membership_card">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <h1 class="text-center font-weight-bold">GymWale Membership Invoice Receipt</h1>
+                    <div class="page">
+                        <div class="container">
+                            <div class="text-left">
+                                <t t-if="doc.image">
+                                    <img class="border mx-auto rounded border-dark"
+                                         style="max-width:200px;max-height:250px"
+                                         t-att-src="image_data_uri(doc.image)" alt="image"/>
+                                </t>
+                                <t t-else="">
+                                    <t t-if="doc.gender=='male'">
+                                        <img class="border mx-auto rounded border-dark"
+                                             style="max-width:200px;max-height:250px"
+                                             src="/GymWale_CRM/static/images/men.jpg" alt="image"/>
+                                    </t>
+                                    <t t-if="doc.gender=='female'">
+                                        <img class="border mx-auto rounded border-dark"
+                                             style="max-width:200px;max-height:250px"
+                                             src="/GymWale_CRM/static/images/female.jpg" alt="image"/>
+                                    </t>
+                                    <t t-if="doc.gender==False">
+                                        <img class="border mx-auto rounded border-dark"
+                                             style="max-width:200px;max-height:250px"
+                                             src="/GymWale_CRM/static/images/no-image.jpg" alt="image"/>
+                                    </t>
+                                </t>
+                            </div>
+                            <br/>
+                            <table class="table table-striped table-bordered">
+                                <tbody class="text-left">
+                                    <tr>
+                                        <th>
+                                            <b>#Membership Code:</b>
+                                        </th>
+                                        <th>
+                                            <t t-esc="doc.serial_number"/>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <b>Name:</b>
+                                        </th>
+                                        <td>
+                                            <t t-esc="doc.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <b>Contact:</b>
+                                        </th>
+                                        <td>
+                                            <t t-esc="doc.contact"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <b>Objective:</b>
+                                        </th>
+                                        <td>
+                                            <t t-esc="doc.objective"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <b>Membership Plan:</b>
+                                        </th>
+                                        <td>
+                                            <t t-esc="doc.membership_plan.membership"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <b>Amount Paid:</b>
+                                        </th>
+                                        <td>
+                                            <span>&#8377;</span>
+                                            <t t-esc="doc.amount_to_be_paid"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <b>Membership Duration:</b>
+                                        </th>
+                                        <td>
+                                            <t t-esc="doc.membership_plan.membership_period"/>
+                                            <span>Days</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <b>Membership Assigned:</b>
+                                        </th>
+                                        <td>
+                                            <t t-esc="doc.membership_assigned"
+                                               t-options='{"widget": "date","format": "dd-MMM-Y"}'/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <b>Membership Expiry:</b>
+                                        </th>
+                                        <td>
+                                            <t t-esc="doc.membership_expire"
+                                               t-options='{"widget": "date","format": "dd-MMM-Y"}'/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <b>Status:</b>
+                                        </th>
+                                        <td>
+                                            <t t-esc="doc.state.title()"/>
+                                        </td>
+                                    </tr>
+                                    <t t-if="doc.remark">
+                                        <tr>
+                                            <th>
+                                                <b>Remark:</b>
+                                            </th>
+                                            <td>
+                                                <t t-esc="doc.remark"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                            <br/>
+                            <span>
+                                Generated On:&#160;&#160;
+                                <t t-esc="datetime.date.today().strftime('%d-%m-%Y')"/>
+                            </span>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <section>
+                                <b>Note:</b>
+                                <br/>
+                                <h6>I as a member of this gym I agree with the following rules and instructions
+                                    mentioned below:
+                                </h6>
+                                <ul>
+                                    <li>
+                                        Any damage to the gym property like music system, mirrors, machinery or any
+                                        other belonging of the gym due to me, then I will be payable for the cost of
+                                        damage.
+                                    </li>
+                                    <li>
+                                        No gym belonging I can take out of the gym premises, if I did I would be
+                                        liable to pay the penalty amount.
+                                    </li>
+                                    <li>
+                                        I will not create any type of nuisance in the gym premises which creates
+                                        inconvenience for other.
+                                    </li>
+                                    <li>
+                                        I will follow up the guidance of the gym instructor/trainer while workout,
+                                        any injury caused by my own mistake, I will be responsible for it.
+                                    </li>
+                                    <li>
+                                        I will keep my belonging with me, any of my belonging if
+                                        left/stolen from the gym premises, I will be responsible for it.
+                                    </li>
+                                    <li>
+                                        If I have paid the gym fee for myself only, I will not ask to allow any of my
+                                        friends and family to use the gym resources.
+                                    </li>
+                                    <li>
+                                        If I have any health issues, I will inform the gym instructor/trainer as the day
+                                        I joined the gym.
+                                    </li>
+                                    <li>
+                                        I will pay the membership amount to the gym at the time of joining, not doing
+                                        this will allow the gym to discard my membership.
+                                    </li>
+                                </ul>
+                            </section>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="gymwale_invoice_receipt" model="report.paperformat">
+        <field name="name">Gym Wale Invoice Receipt</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">80</field>
+    </record>
+
+    <record id="gymwale_membership_receipt" model="ir.actions.report">
+        <field name="name">Membership Receipt</field>
+        <field name="model">gymwale.members</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">GymWale_CRM.gymwale_membership_card</field>
+        <field name="report_file">GymWale_CRM.gymwale_membership_card</field>
+        <field name="print_report_name">'%s - %s' % (object.name,"GymWale-Membership-Receipt")</field>
+        <field name="binding_model_id" ref="model_gymwale_members"/>
+        <field name="binding_type">report</field>
+<!--        <field name="paperformat_id" ref="GymWale_CRM.gymwale_invoice_receipt"/>-->
+    </record>
+</odoo>

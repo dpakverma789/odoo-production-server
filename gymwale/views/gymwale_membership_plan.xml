@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View   -->
+    <record id="gymwale_membership_plan_tree" model="ir.ui.view">
+       <field name="name">gymwale.membership_plan.tree</field>
+        <field name="model">gymwale.membership_plan</field>
+        <field name="arch" type="xml">
+            <tree string="gymwale_membership_plan_tree_details" sample="1">
+                <field name="membership"/>
+                <field name="membership_amount"/>
+                <field name="membership_period"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form view -->
+    <record id="gymwale_membership_plan_form" model="ir.ui.view">
+        <field name="name">gymwale.membership_plan.form</field>
+        <field name="model">gymwale.membership_plan</field>
+        <field name="arch" type="xml">
+            <form string="gymwale_membership_plan_form_details">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="membership"/>
+                            <field name="membership_amount"/>
+                            <field name="membership_period"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+        <!-- Action  -->
+    <record id="membership_plan_action" model="ir.actions.act_window">
+        <field name="name">Membership Plan</field>
+        <field name="res_model">gymwale.membership_plan</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create First Membership Plan!
+            </p>
+        </field>
+    </record>
+</odoo>

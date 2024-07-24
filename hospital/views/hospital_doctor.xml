@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree  -->
+    <record id="hospital_doctor_tree" model="ir.ui.view">
+        <field name="name">hospital.doctor.tree</field>
+        <field name="model">hospital.doctor</field>
+        <field name="arch" type="xml">
+            <tree string="hospital_doctor_details" sample="1">
+                <field name="name"/>
+                <field name="specialization"/>
+                <field name="total_appointment" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form  -->
+    <record id="hospital_doctor_form" model="ir.ui.view">
+        <field name="name">hospital.doctor.form</field>
+        <field name="model">hospital.doctor</field>
+        <field name="arch" type="xml">
+            <form string="hospital_doctor_details">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <div name="button_box" class="oe_button_box">
+                        <button class="oe_stat_button" disabled="True" icon="fa-list">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text" style="font-size:12px">Appointments
+                                    <strong>
+                                        <field name="total_appointment"/>
+                                    </strong>
+                                </span>
+                            </div>
+                        </button>
+                    </div>
+                    <field name="image" widget='image' class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1>
+                            Dr. <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="specialization"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Appointment List" name="doctor_notebook" groups="hospital.group_hospital_doctor">
+                            <field name="patient_appointment_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Kanban -->
+    <record id="hospital_doctor_kanban" model="ir.ui.view">
+        <field name="name">hospital.doctor.kanban</field>
+        <field name="model">hospital.doctor</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="name"/>
+                <field name="specialization"/>
+                <field name="total_appointment"/>
+                <field name="id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="float-left">
+                                <img t-att-src="kanban_image('hospital.doctor', 'image', record.id.raw_value)"
+                                     t-att-title="image" t-att-alt="image"
+                                     class="rounded oe_kanban_avatar o_image_24_cover"
+                                     style="width:70px!important;height:70px!important"/>
+                            </div>
+                            <div class="row mb4">
+                                <strong class="col-6">
+                                    <field name="name"/>
+                                </strong>
+                                <strong class="col-6 text-right">
+                                    <i class="fa fa-list" aria-label="Date" role="img" title="Date"/>
+                                    <field name="total_appointment"/>
+                                </strong>
+                                <div class="col-10">
+                                    <field name="specialization"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Action  -->
+    <record id="hospital_doctor_action" model="ir.actions.act_window">
+        <field name="name">Hospital Doctor</field>
+        <field name="res_model">hospital.doctor</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create First Doctor Details!
+            </p>
+        </field>
+    </record>
+
+</odoo>

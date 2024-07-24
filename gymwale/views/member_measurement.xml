@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View   -->
+    <record id="member_measurement_tree" model="ir.ui.view">
+        <field name="name">member.measurement.tree</field>
+        <field name="model">member.measurement</field>
+        <field name="arch" type="xml">
+            <tree string="member_measurement_tree_details" sample="1">
+                <field name="member_id"/>
+                <field name="measurement_date"/>
+                <field name="height"/>
+                <field name="weight"/>
+                <field name="shoulder"/>
+                <field name="chest"/>
+                <field name="biceps"/>
+                <field name="waist"/>
+                <field name="thigh"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="member_measurement_form" model="ir.ui.view">
+        <field name="name">member.measurement.form</field>
+        <field name="model">member.measurement</field>
+        <field name="arch" type="xml">
+            <form string="member_measurement_form_details" sample="1">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="member_id"/>
+                            <field name="measurement_date"/>
+                            <field name="height"/>
+                            <field name="weight"/>
+                            <field name="shoulder"/>
+                        </group>
+                        <group>
+                            <field name="chest"/>
+                            <field name="biceps"/>
+                            <field name="waist"/>
+                            <field name="thigh"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action  -->
+    <record id="member_measurement_action" model="ir.actions.act_window">
+        <field name="name">Member Measurement</field>
+        <field name="res_model">member.measurement</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- email template   -->
+    <record id="gymwale_email_receipt_template" model="mail.template">
+        <field name="name">GymWale Membership Receipt</field>
+        <field name="subject">GymWale Membership Receipt</field>
+        <field name="partner_to">${object.id}</field>
+        <field name="email_to">${object.email}</field>
+        <field name="email_from">${object.write_uid.email}</field>
+        <field name="model_id" ref="model_gymwale_members"/>
+        <field name="auto_delete" eval="True"/>
+        <field name="body_html" type="html">
+            <div class="container-fluid">
+                <b>Hi ${object.name},</b>
+                <br/>
+                <br/>
+                Thanks for joining Gym-Wale Gym.<br/>
+                We are glad to get a chance to help you for your better health.
+                <br/>
+                Please find your membership invoice in the attachment.
+                We expect you will be our valuable long term member.
+                <br/>
+                For any concern or query, feel free to reach on call, whatsapp, instagram and website.
+                <br/>
+                <br/>
+                Welcome to the GYM<br/>
+                Warm Regards<br/>
+                Deepak Verma<br/>
+                Mob- 7073870596 | 8955160103
+                <br/>
+                Website: <a href="https://gymwale.vercel.app/">Click here for Website Visit</a>
+                <br/>
+                Instagram: <a href="https://www.instagram.com/the_gymwale/">Click here for Instagram Page</a>
+            </div>
+        </field>
+        <field name="report_template" ref="gymwale_membership_receipt"/>
+        <field name="report_name">${object.name}-GymWale-Membership-Receipt</field>
+    </record>
+</odoo>

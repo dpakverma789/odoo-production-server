@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- demo patients  -->
+        <record id="patient_1" model="hospital.patient">
+            <field name="name">Deepak</field>
+            <field name="age">25</field>
+            <field name="contact">1234567890</field>
+            <field name="email">deepak@gmail.com</field>
+            <field name="gender">male</field>
+            <field name="image" type="base64" file="hospital/static/images/patient-5.jpg"/>
+        </record>
+        <record id="patient_2" model="hospital.patient">
+            <field name="name">Odoo</field>
+            <field name="age">10</field>
+            <field name="contact">2345678910</field>
+            <field name="email">odoo@gmail.com</field>
+            <field name="gender">male</field>
+            <field name="image" type="base64" file="hospital/static/images/patient-4.png"/>
+        </record>
+        <record id="patient_3" model="hospital.patient">
+            <field name="name">Neha</field>
+            <field name="age">25</field>
+            <field name="contact">1023654789</field>
+            <field name="email">neha@gmail.com</field>
+            <field name="gender">female</field>
+            <field name="image" type="base64" file="hospital/static/images/patient-6.jpg"/>
+        </record>
+        <record id="patient_4" model="hospital.patient">
+            <field name="name">Arpita</field>
+            <field name="age">28</field>
+            <field name="contact">1095654789</field>
+            <field name="email">arpita@gmail.com</field>
+            <field name="gender">female</field>
+            <field name="image" type="base64" file="hospital/static/images/patient-1.jpg"/>
+        </record>
+
+        <!-- demo doctors  -->
+        <record id="doctor_1" model="hospital.doctor">
+            <field name="name">Prachi</field>
+            <field name="specialization">Heart Specialist</field>
+            <field name="image" type="base64" file="hospital/static/images/doctor-3.jpg"/>
+        </record>
+        <record id="doctor_2" model="hospital.doctor">
+            <field name="name">Rajashree</field>
+            <field name="specialization">Neuro Surgeon</field>
+            <field name="image" type="base64" file="hospital/static/images/doctor-2.jpg"/>
+        </record>
+        <record id="doctor_3" model="hospital.doctor">
+            <field name="name">Priyanka</field>
+            <field name="specialization">General Physician</field>
+            <field name="image" type="base64" file="hospital/static/images/doctor-1.jpg"/>
+        </record>
+        <record id="doctor_4" model="hospital.doctor">
+            <field name="name">Sonali</field>
+            <field name="specialization">Dentist</field>
+            <field name="image" type="base64" file="hospital/static/images/doctor-4.jpg"/>
+        </record>
+
+        <!-- demo rejection reason  -->
+        <record id="already_have_appointment" model="appointment.rejection.reason">
+            <field name="rejection_reason">Doctor already have an appointment</field>
+        </record>
+        <record id="doctor_is_on_leave" model="appointment.rejection.reason">
+            <field name="rejection_reason">Doctor is on leave</field>
+        </record>
+    </data>
+</odoo>

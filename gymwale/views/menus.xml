@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- root menu  -->
+    <menuitem id="gymwale_root_menu" name="GymWale" sequence="1"/>
+
+    <!--  Dashboard  -->
+<!--    <menuitem id="dashboard_menu" name="Dashboard" parent="gymwale_root_menu" action="gymwale_dashboard_action" sequence="2"/>-->
+    <menuitem id="menu_gymwale_dashboard" name="GymWale Dashboard" parent="gymwale_root_menu" action="action_gymwale_dashboard" sequence="2"/>
+
+    <!-- Members menu  -->
+    <menuitem id="members_menu" name="Members" parent="gymwale_root_menu" action="members_action"
+    sequence="3"/>
+
+    <!-- Expense -->
+    <menuitem id="expense_menu" name="Expense" parent="gymwale_root_menu" action="gymwale_expense_action"
+    sequence="4"/>
+
+    <!-- Others -->
+    <menuitem id="other_menu" name="Others" parent="gymwale_root_menu" sequence="4"/>
+
+    <!-- Batch  -->
+    <menuitem id="batch_menu" name="Batch" parent="other_menu" action="gymwale_batch_action"
+    sequence="1"/>
+
+        <!-- Membership Plan  -->
+    <menuitem id="membership_plan_menu" name="Membership Plan" parent="other_menu" action="membership_plan_action"
+    sequence="2"/>
+    <!-- Others -->
+</odoo>

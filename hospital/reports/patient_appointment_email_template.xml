@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- email template   -->
+    <record id="patient_appointment_email_template" model="mail.template">
+        <field name="name">Patient Appointment</field>
+        <field name="subject">Appointment Mail</field>
+        <field name="partner_to">${object.patient_id.id}</field>
+        <field name="email_to">${object.patient_id.email}</field>
+        <field name="email_from">${object.write_uid.email}</field>
+        <field name="model_id" ref="hospital.model_hospital_appointment"/>
+        <field name="auto_delete" eval="True"/>
+        <field name="body_html" type="html">
+            <div class="container-fluid">
+                <b>Hi ${object.patient_id.name},</b>
+                <br/>
+                Your Appointment has been <b>${object.appointment_state}</b> with <b>Dr. ${object.doctor_id.name}</b>.
+                <br/>
+                Please find the appointment receipt in the attachment, if you have any query please feel free to
+                contact us.
+                <br/>
+                <br/>
+                <b>
+                    Thanks
+                    <br/>
+                    ${object.write_uid.name}
+                </b>
+            </div>
+        </field>
+        <field name="report_template" ref="hospital.patient_appointment_report"/>
+        <field name="report_name">${object.patient_id.name} - ${object.name}</field>
+    </record>
+</odoo>

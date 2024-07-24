@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="patient_appointment_card">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="container">
+                            <h2 class="text-right font-weight-bold">Appointment Card</h2>
+                            <div class="text-left">
+                                <t t-if="doc.image">
+                                    <img class="border mx-auto rounded border-dark"
+                                         style="max-width:200px;max-height:250px"
+                                         t-att-src="image_data_uri(doc.image)" alt="image"/>
+                                </t>
+                            </div>
+                            <table class="table table-bordered h6">
+                                <tbody class="text-left">
+                                    <tr>
+                                        <td>
+                                            <b>Appointment Number#:</b>
+                                        </td>
+                                        <td>
+                                            <t t-esc="doc.name"/>
+                                        </td>
+                                    </tr>
+                                    <br/>
+                                    <tr>
+                                        <td>
+                                            <b>Patient Name:</b>
+                                        </td>
+                                        <td>
+                                            <t t-esc="doc.patient_id.name"/>
+                                        </td>
+                                    </tr>
+                                    <br/>
+                                    <tr>
+                                        <td>
+                                            <b>Patient Gender:</b>
+                                        </td>
+                                        <td>
+                                            <t t-esc="doc.patient_id.gender"/>
+                                        </td>
+                                    </tr>
+                                    <br/>
+                                    <tr>
+                                        <td>
+                                            <b>Doctor Name:</b>
+                                        </td>
+                                        <td>
+                                            <t t-esc="doc.doctor_id.name"/>
+                                        </td>
+                                    </tr>
+                                    <br/>
+                                    <tr>
+                                        <td>
+                                            <b>Doctor Specialisation:</b>
+                                        </td>
+                                        <td>
+                                            <t t-esc="doc.specialization"/>
+                                        </td>
+                                    </tr>
+                                    <br/>
+                                    <tr>
+                                        <td>
+                                            <b>Appointment Time:</b>
+                                        </td>
+                                        <td>
+                                            <t t-esc="doc.appointment_time"/>
+                                        </td>
+                                    </tr>
+                                    <br/>
+                                    <tr>
+                                        <td>
+                                            <b>Appointment Status:</b>
+                                        </td>
+                                        <td>
+                                            <t t-esc="doc.appointment_state"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- This tag is deprecated    -->
+    <!--    <report id="patient_appointment_report"-->
+    <!--            string="Appointment Receipt"-->
+    <!--            model="hospital.appointment"-->
+    <!--            report_type="qweb-pdf"-->
+    <!--            menu="False"-->
+    <!--            name="hospital.patient_appointment_card"-->
+    <!--            file="hospital.patient_appointment_card">-->
+    <!--    </report>-->
+
+
+    <record id="patient_appointment_report" model="ir.actions.report">
+        <field name="name">Appointment Receipt</field>
+        <field name="model">hospital.appointment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hospital.patient_appointment_card</field>
+        <field name="report_file">hospital.patient_appointment_card</field>
+        <field name="print_report_name">'%s - %s' % (object.patient_id.name,object.name)</field>
+        <field name="binding_model_id" ref="model_hospital_appointment"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

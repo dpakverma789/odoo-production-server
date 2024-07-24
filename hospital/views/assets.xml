@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="hospital_backend_assets" name="hospital backend assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/hospital/static/src/css/dashboard.css"/>
+            <script type="text/javascript" src="/hospital/static/src/js/dashboard.js"/>
+        </xpath>
+    </template>
+</odoo>

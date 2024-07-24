@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!-- many2many fields  -->
+    <record id="basic" model="patient.class.status">
+        <field name="patient_class_status">Basic</field>
+        <field name="color">2</field>
+    </record>
+    <record id="classic" model="patient.class.status">
+        <field name="patient_class_status">Classic</field>
+        <field name="color">7</field>
+    </record>
+    <record id="premium" model="patient.class.status">
+        <field name="patient_class_status">Premium</field>
+        <field name="color">3</field>
+    </record>
+</odoo>

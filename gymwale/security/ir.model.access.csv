@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_gymwale_members,gymwale_members,model_gymwale_members,,1,1,1,1
+access_gymwale_membership_plan,gymwale_membership_plan,model_gymwale_membership_plan,,1,1,1,1
+access_gymwale_batch,gymwale_batch,model_gymwale_batch,,1,1,1,1
+access_gymwale_dashboard,gymwale_dashboard,model_gymwale_dashboard,,1,1,1,1
+access_gymwale_expense,gymwale_expense,model_gymwale_expense,,1,1,1,1
+access_member_measurement,member_measurement,model_member_measurement,,1,1,1,1
+access_gymwale_routine_generator_wizard,gymwale_routine_generator_wizard,model_gymwale_routine_generator_wizard,,1,1,1,1

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree  -->
+    <record id="expense_category_tree" model="ir.ui.view">
+        <field name="name">expense.category.tree</field>
+        <field name="model">expense.category</field>
+        <field name="arch" type="xml">
+            <tree string="expense_category_tree_view" sample="1">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form  -->
+    <record id="expense_category_form" model="ir.ui.view">
+        <field name="name">expense.category.form</field>
+        <field name="model">expense.category</field>
+        <field name="arch" type="xml">
+            <form string="expense_category_form_view">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="is_income" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Expense List" name="expense_notebook">
+                            <field name="expense_ids">
+                                <tree string="one2many_tree_view">
+                                     <field name="name"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action  -->
+    <record id="expense_category_action" model="ir.actions.act_window">
+        <field name="name">Expense Category</field>
+        <field name="res_model">expense.category</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Your First Expense Category!
+            </p>
+        </field>
+    </record>
+
+    <!-- root menu  -->
+    <menuitem id="money_management_root_menu" name="Wallet"/>
+
+    <!-- Expense Category menu  -->
+    <menuitem id="expense_category_menu" name="Expense Category" parent="money_management_root_menu"
+              action="expense_category_action"/>
+</odoo>

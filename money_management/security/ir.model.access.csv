@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_expense_transaction,expense_transaction,model_expense_transaction,,1,1,1,1
+access_expense_category,expense_category,model_expense_category,,1,1,1,1
+access_credit_card_manager,credit_card_manager,model_credit_card_manager,,1,1,1,1
+access_expense_bank_card,expense_bank_card,model_expense_bank_card,,1,1,1,1

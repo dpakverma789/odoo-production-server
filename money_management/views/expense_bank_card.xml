@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree  -->
+    <record id="expense_bank_card_tree" model="ir.ui.view">
+        <field name="name">expense.bank.card.tree</field>
+        <field name="model">expense.bank.card</field>
+        <field name="arch" type="xml">
+            <tree string="expense_bank_card_tree_view" sample="1">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form  -->
+    <record id="expense_bank_card_form" model="ir.ui.view">
+        <field name="name">expense.bank.card.form</field>
+        <field name="model">expense.bank.card</field>
+        <field name="arch" type="xml">
+            <form string="expense_bank_card_form_view">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action  -->
+    <record id="expense_bank_card_action" model="ir.actions.act_window">
+        <field name="name">Bank Card</field>
+        <field name="res_model">expense.bank.card</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Your First Bank Card!
+            </p>
+        </field>
+    </record>
+
+    <!-- root menu  -->
+    <menuitem id="money_management_root_menu" name="Wallet"/>
+
+    <!-- Expense Category menu  -->
+    <menuitem id="expense_bank_card_menu" name="Bank Card" parent="money_management_root_menu"
+              action="expense_bank_card_action"/>
+</odoo>

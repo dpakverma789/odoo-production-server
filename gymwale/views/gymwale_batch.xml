@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View   -->
+    <record id="gymwale_batch_tree" model="ir.ui.view">
+        <field name="name">gymwale.batch.tree</field>
+        <field name="model">gymwale.batch</field>
+        <field name="arch" type="xml">
+            <tree string="gymwale_batch_tree_details" sample="1">
+                <field name="batch_name"/>
+                <field name="batch_starts"/>
+                <field name="batch_ends"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form view -->
+    <record id="gymwale_batch_form" model="ir.ui.view">
+        <field name="name">gymwale.batch.form</field>
+        <field name="model">gymwale.batch</field>
+        <field name="arch" type="xml">
+            <form string="gymwale_batch_form_details">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="batch_name"/>
+                            <field name="batch_starts"/>
+                            <field name="batch_ends"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action  -->
+    <record id="gymwale_batch_action" model="ir.actions.act_window">
+        <field name="name">GymWale Batch</field>
+        <field name="res_model">gymwale.batch</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create First Batch!
+            </p>
+        </field>
+    </record>
+</odoo>

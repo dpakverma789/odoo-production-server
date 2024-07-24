@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- expense.category  -->
+        <record id="shopping" model="expense.category">
+            <field name="name">Shopping Expense</field>
+        </record>
+        <record id="entertainment" model="expense.category">
+            <field name="name">Entertainment</field>
+        </record>
+        <record id="food" model="expense.category">
+            <field name="name">Food</field>
+        </record>
+        <record id="credit_card" model="expense.category">
+            <field name="name">Credit Card Bills</field>
+        </record>
+        <record id="recharge" model="expense.category">
+            <field name="name">Recharge</field>
+        </record>
+        <record id="health_fitness" model="expense.category">
+            <field name="name">Health &#38; Fitness</field>
+        </record>
+        <record id="study_course" model="expense.category">
+            <field name="name">Study &#38; Course</field>
+        </record>
+        <record id="transport" model="expense.category">
+            <field name="name">Transportation</field>
+        </record>
+        <record id="general" model="expense.category">
+            <field name="name">General Expense</field>
+        </record>
+        <record id="family" model="expense.category">
+            <field name="name">Family Expense</field>
+        </record>
+        <record id="investment" model="expense.category">
+            <field name="name">Investment</field>
+        </record>
+        <record id="rent" model="expense.category">
+            <field name="name">Rent</field>
+        </record>
+    </data>
+</odoo>

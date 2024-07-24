@@ -1,0 +1,29 @@
+
+.thumbnail{
+    top:-3mm;
+    border-radius:5%;
+    height: 20mm;
+    width: 20mm;
+    box-shadow: 1px 2px 5px 1px #A9A9A8;
+}
+
+.icon{
+    font-size: 35px;
+    color: #fff;
+    transform: translate(6.5mm,5mm);
+}
+
+.number-info{
+    float: right;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.card-tag{
+    font-size:12px;
+    font-weight:bold;
+}
+
+.box-shadow{
+    box-shadow: 2px 2px 5px -2px black;
+}
