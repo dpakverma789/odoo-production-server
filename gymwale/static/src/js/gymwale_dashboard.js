@@ -17,34 +17,34 @@ odoo.define('gymwale.dashboard', function (require) {
         // Start method to load the dashboard
         start: function () {
             var self = this;
-//            this._fetchDashboardData().then(function () {
-//                self._renderDashboard();
-//            });
+            this._fetchDashboardData().then(function () {
+                self._renderDashboard();
+            });
             return this._super();
         },
 
         // Fetch dashboard data from the server
-//        _fetchDashboardData: function () {
-//            var self = this;
-//            return this._rpc({
-//                model: 'gymwale.dashboard',
-//                method: 'get_dashboard_data',
-//                args: [],
-//            }).then(function (result) {
-//                self.dashboardData = result; // Store result in data storage
-//            });
-//        },
+        _fetchDashboardData: function () {
+            var self = this;
+            return this._rpc({
+                model: 'gymwale.dashboard',
+                method: 'compute_total_paid_members',
+                args: [],
+            }).then(function (result) {
+                self.dashboardData = result; // Store result in data storage
+            });
+        },
 
         // Render the dashboard with the fetched data
-//        _renderDashboard: function () {
-//            const $totalMembers = this.$('#total_members_count');
+        _renderDashboard: function () {
+            const $totalMembers = this.$('#total_members_count');
 //            const $totalRevenue = this.$('#total_revenue_count');
 //            const $newSignups = this.$('#new_signups_count');
-//
-//            $totalMembers.text(this.dashboardData.total_members || 0);
+
+            $totalMembers.text(this.dashboardData.total_members || 0);
 //            $totalRevenue.text(this.dashboardData.total_revenue || 0);
 //            $newSignups.text(this.dashboardData.new_signups || 0);
-//        },
+        },
     });
 
     core.action_registry.add('gymwale_dashboard', GymwaleDashboard);

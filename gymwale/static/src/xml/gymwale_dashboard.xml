@@ -11,7 +11,7 @@
                                     <i class="fa fa-bars icon"/>
                                 </div>
                             </span>
-                            <span class="number-info">123</span>
+                            <span class="number-info" id="total_members_count">123</span>
                         </div>
                         <hr/>
                         <p class="card-tag">Total Paid Members</p>
