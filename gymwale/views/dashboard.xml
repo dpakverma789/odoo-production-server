@@ -46,7 +46,7 @@
 <!--    </record>-->
 
     <record id="action_gymwale_dashboard" model="ir.actions.client">
-        <field name="name">GymWale Dashboard</field>
+        <field name="name">Dashboard</field>
         <field name="tag">gymwale_dashboard</field>
     </record>
 </odoo>
