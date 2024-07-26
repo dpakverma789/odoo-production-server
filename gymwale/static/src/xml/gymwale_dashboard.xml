@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<template id="gymwale_dashboard_template">
-    <t t-name="GymWale_CRM.gymwale_dashboard_template">
+<template id="gymwale_dashboard_template" name="Gymwale Dashboard Template">
+    <t t-name="gymwale_dashboard_template">
         <div class="container-fluid mt-4 o_dashboard">
             <div class="card mx-5 mt-5">
                 <div class="card-body d-inline-flex">

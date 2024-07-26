@@ -7,7 +7,7 @@
     'category': 'Extra Tools',
     'website': 'https://gymwale.vercel.app/',
     'images': [],
-    'depends': ['base','mail', 'web'],
+    'depends': ['base', 'mail', 'web'],
     'data': [
         # security
         'security/ir.model.access.csv',
@@ -31,18 +31,19 @@
         # demo data files
         'demo/demo_data.xml',
 
-        #report
+        # report
         'reports/gymwale_membership_receipt.xml',
         'reports/gymwale_membership_email_receipt.xml',
     ],
     'assets': {
         'web.assets_backend': [
-            'GymWale_CRM/static/src/js/gymwale_dashboard.js',
-            'GymWale_CRM/static/src/css/dashboard.css',
-            'GymWale_CRM/static/src/xml/gymwale_dashboard.xml'
+            'gymwale/static/src/css/dashboard.css',
+            'gymwale/static/src/js/gymwale_dashboard.js'
+        ],
+        'web.assets_qweb': [
+            'gymwale/static/src/xml/gymwale_dashboard.xml',
         ],
     },
-
 
     'installable': True,
     'application': True,

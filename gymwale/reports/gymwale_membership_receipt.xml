@@ -207,11 +207,11 @@
         <field name="name">Membership Receipt</field>
         <field name="model">gymwale.members</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">GymWale_CRM.gymwale_membership_card</field>
-        <field name="report_file">GymWale_CRM.gymwale_membership_card</field>
+        <field name="report_name">gymwale.gymwale_membership_card</field>
+        <field name="report_file">gymwale.gymwale_membership_card</field>
         <field name="print_report_name">'%s - %s' % (object.name,"GymWale-Membership-Receipt")</field>
         <field name="binding_model_id" ref="model_gymwale_members"/>
         <field name="binding_type">report</field>
-<!--        <field name="paperformat_id" ref="GymWale_CRM.gymwale_invoice_receipt"/>-->
+<!--        <field name="paperformat_id" ref="gymwale.gymwale_invoice_receipt"/>-->
     </record>
 </odoo>

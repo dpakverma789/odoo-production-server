@@ -61,7 +61,7 @@ class GymMembers(models.Model):
             if today_workout not in routine.values():
                 routine.update({day[6 - count]: today_workout})
                 count -= 1
-        form_view_id = self.env.ref('GymWale_CRM.gymwale_routine_generator_wizard').id
+        form_view_id = self.env.ref('gymwale.gymwale_routine_generator_wizard').id
         return {
             'name': _('Routine Generator'),
             'view_type': 'form',
@@ -128,7 +128,7 @@ class GymMembers(models.Model):
     @api.model
     def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
         res = super().fields_view_get(view_id, view_type, toolbar, submenu)
-        remove_report_id = self.env.ref('GymWale_CRM.gymwale_membership_receipt').id
+        remove_report_id = self.env.ref('gymwale.gymwale_membership_receipt').id
         if view_type == 'form' and remove_report_id and \
                 toolbar and res['toolbar'] and res['toolbar'].get('print'):
             remove_report_record = [rec for rec in res['toolbar'].get('print') if rec.get('id') == remove_report_id]
@@ -142,7 +142,7 @@ class GymMembers(models.Model):
         download pdf appointment template
         :return:
         """
-        membership_email_receipt_id = self.env.ref('GymWale_CRM.gymwale_email_receipt_template').id
+        membership_email_receipt_id = self.env.ref('gymwale.gymwale_email_receipt_template').id
         email_send_condition = (self.email, membership_email_receipt_id, self.send_email)
         if all(email_send_condition):
             mail_id = self.env['mail.template'].browse(membership_email_receipt_id).send_mail(self.id, force_send=True)
@@ -152,7 +152,7 @@ class GymMembers(models.Model):
                 msg = 'Invoice sent on email failed'
             self.message_post(body=msg)
         self.send_email = False
-        return self.env.ref('GymWale_CRM.gymwale_membership_receipt').report_action(self)
+        return self.env.ref('gymwale.gymwale_membership_receipt').report_action(self)
 
     def confirm_payment(self):
         self.write({'state': 'paid', 'is_amount_paid': True, 'is_member_joined': True})
