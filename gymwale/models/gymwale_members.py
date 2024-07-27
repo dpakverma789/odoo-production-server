@@ -52,6 +52,52 @@ class GymMembers(models.Model):
 
     _sql_constraints = [('contact_unique', 'unique (contact)', "Contact already exists !")]
 
+    @api.model
+    def get_dashboard_info(self):
+        # cache variable
+        total_amount_collected = total_paid_members_count = 0
+        arg = []
+        total_paid_members = self.search([('is_amount_paid', '=', True)])
+        total_paid_members_count = total_paid_members.__len__()
+        all_paid_members = total_paid_members
+
+        membership_plan_ids = self.env['gymwale.membership_plan'].search([])
+        monthly_id = membership_plan_ids.filtered(lambda x: x.membership.lower() == 'monthly')
+        monthly_charges = monthly_id.mapped('membership_amount')[0]
+
+        quarterly_id = membership_plan_ids.filtered(lambda x: x.membership.lower() == 'quarterly')
+        quarterly_charges = quarterly_id.mapped('membership_amount')[0]
+
+        half_yearly_id = membership_plan_ids.filtered(lambda x: x.membership.lower() == 'half yearly')
+        half_yearly_charges = half_yearly_id.mapped('membership_amount')[0]
+
+        monthly_members_total = sum(
+            all_paid_members.filtered(lambda x: x.amount_to_be_paid <= monthly_charges).mapped('amount_to_be_paid'))
+        quarterly_members_total = sum(
+            all_paid_members.filtered(lambda x: monthly_charges < x.amount_to_be_paid <= quarterly_charges).mapped('amount_to_be_paid'))
+        half_yearly_members_total = sum(
+            all_paid_members.filtered(lambda x: quarterly_charges < x.amount_to_be_paid <= half_yearly_charges).mapped('amount_to_be_paid'))
+        annual_members_total = sum(
+            all_paid_members.filtered(lambda x: half_yearly_charges < x.amount_to_be_paid).mapped('amount_to_be_paid'))
+        if monthly_members_total:
+            arg.append(monthly_members_total)
+        if quarterly_members_total:
+            arg.append(quarterly_members_total // 3)
+        if half_yearly_members_total:
+            arg.append(half_yearly_members_total // 6)
+        if annual_members_total:
+            arg.append(annual_members_total // 12)
+        monthly_collection = sum(arg) if arg else 0
+        collection = total_paid_members.mapped('amount_to_be_paid')
+        total_collection = sum(collection)
+
+        return {
+            'total_collection': total_collection,
+            'total_paid_members_count': total_paid_members_count,
+            'monthly_collection': monthly_collection,
+        }
+
+
     def generate_routine(self):
         routine = {}
         count = 6

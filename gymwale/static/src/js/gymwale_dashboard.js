@@ -8,42 +8,45 @@ odoo.define('gymwale.dashboard', function (require) {
     const GymwaleDashboard = AbstractAction.extend({
         template: 'gymwale_dashboard_template',
 
-        // Fetch data from the server
         init: function (parent, context) {
             this._super(parent, context);
-            this.dashboardData = {}; // Initialize data storage
+            this.dashboardData = {};
+            console.log("Dashboard initialized");
         },
 
-        // Start method to load the dashboard
         start: function () {
             var self = this;
+            console.log("Fetching dashboard data...");
             this._fetchDashboardData().then(function () {
+                console.log("Data fetched:", self.dashboardData);
                 self._renderDashboard();
             });
             return this._super();
         },
 
-        // Fetch dashboard data from the server
         _fetchDashboardData: function () {
             var self = this;
             return this._rpc({
-                model: 'gymwale.dashboard',
-                method: 'compute_total_paid_members',
+                model: 'gymwale.members',
+                method: 'get_dashboard_info',
                 args: [],
             }).then(function (result) {
-                self.dashboardData = result; // Store result in data storage
+                self.dashboardData = result;
+                console.log("Dashboard data received:", result);
+            }).catch(function (error) {
+                console.error("Error fetching dashboard data:", error);
             });
         },
 
-        // Render the dashboard with the fetched data
         _renderDashboard: function () {
-            const $totalMembers = this.$('#total_members_count');
-//            const $totalRevenue = this.$('#total_revenue_count');
-//            const $newSignups = this.$('#new_signups_count');
+            const $total_collection = this.$('#total_collection');
+            const $total_paid_members_count = this.$('#total_paid_members_count');
+            const $monthly_collection = this.$('#monthly_collection');
 
-            $totalMembers.text(this.dashboardData.total_members || 0);
-//            $totalRevenue.text(this.dashboardData.total_revenue || 0);
-//            $newSignups.text(this.dashboardData.new_signups || 0);
+            $total_collection.text(this.dashboardData.total_collection || 0);
+            $total_paid_members_count.text(this.dashboardData.total_paid_members_count || 0);
+            $monthly_collection.text(this.dashboardData.monthly_collection || 0);
+            console.log("Dashboard rendered");
         },
     });
 

@@ -10,6 +10,7 @@
     'depends': ['base', 'mail', 'web'],
     'data': [
         # security
+        'security/security.xml',
         'security/ir.model.access.csv',
 
         # wizard

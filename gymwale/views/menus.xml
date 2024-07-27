@@ -4,8 +4,8 @@
     <menuitem id="gymwale_root_menu" name="GymWale" sequence="1"/>
 
     <!--  Dashboard  -->
-<!--    <menuitem id="dashboard_menu" name="Dashboard" parent="gymwale_root_menu" action="gymwale_dashboard_action" sequence="2"/>-->
-    <menuitem id="menu_gymwale_dashboard" name="GymWale Dashboard" parent="gymwale_root_menu" action="action_gymwale_dashboard" sequence="2"/>
+<!--<menuitem id="dashboard_menu" name="Dashboard" parent="gymwale_root_menu" action="gymwale_dashboard_action" sequence="2"/>-->
+    <menuitem id="menu_gymwale_dashboard" name="Dashboard" parent="gymwale_root_menu" action="action_gymwale_dashboard" sequence="2"/>
 
     <!-- Members menu  -->
     <menuitem id="members_menu" name="Members" parent="gymwale_root_menu" action="members_action"
