@@ -1,50 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Tree View   -->
-    <record id="gymwale_dashboard_tree" model="ir.ui.view">
-        <field name="name">gymwale.dashboard.form</field>
-        <field name="model">gymwale.dashboard</field>
-        <field name="arch" type="xml">
-            <tree string="gymwale_dashboard_tree_details" sample="1" delete="0">
-                <field name="total_paid_members" optional="show"/>
-                <field name="net_collection" optional="hide"/>
-                <field name="monthly_collection" optional="hide"/>
-                <field name="total_amount_collected" optional="hide" string="Active Member Amount"/>
-                <field name="total_gym_expense" optional="show"/>
-                <field name="total_collection" optional="hide"/>
-            </tree>
-        </field>
-    </record>
-
-    <!-- Form view -->
-    <record id="gymwale_dashboard_form" model="ir.ui.view">
-        <field name="name">gymwale.dashboard.form</field>
-        <field name="model">gymwale.dashboard</field>
-        <field name="arch" type="xml">
-            <form string="gymwale_dashboard_form_details" create="0" delete="0">
-                <sheet>
-                    <group>
-                        <group>
-                            <field name="total_paid_members"/>
-                            <field name="total_amount_collected" string="Active Member Amount"/>
-                            <field name="monthly_collection"/>
-                            <field name="total_gym_expense"/>
-                            <field name="net_collection"/>
-                            <field name="total_collection"/>
-                        </group>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <!-- Action  -->
-<!--    <record id="gymwale_dashboard_action" model="ir.actions.act_window">-->
-<!--        <field name="name">GymWale Dashboard</field>-->
-<!--        <field name="res_model">gymwale.dashboard</field>-->
-<!--        <field name="view_mode">tree,form</field>-->
-<!--    </record>-->
-
     <record id="action_gymwale_dashboard" model="ir.actions.client">
         <field name="name">Dashboard</field>
         <field name="tag">gymwale_dashboard</field>

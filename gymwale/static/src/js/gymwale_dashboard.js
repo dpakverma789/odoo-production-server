@@ -42,10 +42,14 @@ odoo.define('gymwale.dashboard', function (require) {
             const $total_collection = this.$('#total_collection');
             const $total_paid_members_count = this.$('#total_paid_members_count');
             const $monthly_collection = this.$('#monthly_collection');
+            const $total_gym_expense = this.$('#total_gym_expense');
+            const $net_collection = this.$('#net_collection');
 
             $total_collection.text(this.dashboardData.total_collection || 0);
             $total_paid_members_count.text(this.dashboardData.total_paid_members_count || 0);
             $monthly_collection.text(this.dashboardData.monthly_collection || 0);
+            $total_gym_expense.text(this.dashboardData.total_gym_expense || 0);
+            $net_collection.text(this.dashboardData.net_collection || 0);
             console.log("Dashboard rendered");
         },
     });

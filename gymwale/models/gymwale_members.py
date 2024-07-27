@@ -49,18 +49,12 @@ class GymMembers(models.Model):
     active = fields.Boolean('Active', default=True)
     is_whatsapp_member = fields.Boolean('Is Whatsapp Member', default=False)
     is_member_joined = fields.Boolean('Is Member Joined', default=False)
+    created_by = fields.Many2one('res.users', string='Created by', default=lambda self: self.env.user)
 
     _sql_constraints = [('contact_unique', 'unique (contact)', "Contact already exists !")]
 
-    @api.model
-    def get_dashboard_info(self):
-        # cache variable
-        total_amount_collected = total_paid_members_count = 0
+    def get_monthly_collection(self, all_paid_members):
         arg = []
-        total_paid_members = self.search([('is_amount_paid', '=', True)])
-        total_paid_members_count = total_paid_members.__len__()
-        all_paid_members = total_paid_members
-
         membership_plan_ids = self.env['gymwale.membership_plan'].search([])
         monthly_id = membership_plan_ids.filtered(lambda x: x.membership.lower() == 'monthly')
         monthly_charges = monthly_id.mapped('membership_amount')[0]
@@ -74,9 +68,11 @@ class GymMembers(models.Model):
         monthly_members_total = sum(
             all_paid_members.filtered(lambda x: x.amount_to_be_paid <= monthly_charges).mapped('amount_to_be_paid'))
         quarterly_members_total = sum(
-            all_paid_members.filtered(lambda x: monthly_charges < x.amount_to_be_paid <= quarterly_charges).mapped('amount_to_be_paid'))
+            all_paid_members.filtered(lambda x: monthly_charges < x.amount_to_be_paid <= quarterly_charges).mapped(
+                'amount_to_be_paid'))
         half_yearly_members_total = sum(
-            all_paid_members.filtered(lambda x: quarterly_charges < x.amount_to_be_paid <= half_yearly_charges).mapped('amount_to_be_paid'))
+            all_paid_members.filtered(lambda x: quarterly_charges < x.amount_to_be_paid <= half_yearly_charges).mapped(
+                'amount_to_be_paid'))
         annual_members_total = sum(
             all_paid_members.filtered(lambda x: half_yearly_charges < x.amount_to_be_paid).mapped('amount_to_be_paid'))
         if monthly_members_total:
@@ -88,13 +84,28 @@ class GymMembers(models.Model):
         if annual_members_total:
             arg.append(annual_members_total // 12)
         monthly_collection = sum(arg) if arg else 0
+        return monthly_collection
+
+    @api.model
+    def get_dashboard_info(self):
+        # cache variable
+        total_amount_collected = total_paid_members_count = 0
+        total_paid_members = self.search([('is_amount_paid', '=', True)])
+        total_paid_members_count = total_paid_members.__len__()
+        all_paid_members = total_paid_members
+        monthly_collection = self.get_monthly_collection(all_paid_members)
         collection = total_paid_members.mapped('amount_to_be_paid')
         total_collection = sum(collection)
-
+        total_expense_records = self.env['gymwale.expense'].search([], order='bill_from desc', limit=1)
+        total_gym_expense = total_expense_records.total_expense
+        if monthly_collection and total_gym_expense:
+            net_collection = monthly_collection - total_gym_expense
         return {
             'total_collection': total_collection,
             'total_paid_members_count': total_paid_members_count,
             'monthly_collection': monthly_collection,
+            'total_gym_expense': total_gym_expense,
+            'net_collection': net_collection,
         }
 
 
@@ -202,8 +213,6 @@ class GymMembers(models.Model):
 
     def confirm_payment(self):
         self.write({'state': 'paid', 'is_amount_paid': True, 'is_member_joined': True})
-        dashboard = self.env['gymwale.dashboard'].search([], limit=1)
-        dashboard.total_collection += self.amount_to_be_paid
         return
 
     @api.onchange('membership_plan', 'membership_assigned')

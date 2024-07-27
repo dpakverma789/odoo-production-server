@@ -8,8 +8,7 @@
                         <div class="card-body">
                             <span class="d-inline-flex">
                                 <div class="position-absolute thumbnail" style="background-color:#fcba03">
-<!--                                    <i class="fa fa-bars icon"/>-->
-                                    <i class="fa fa-user icon"/>
+                                    <i class="fa fa-users icon"/>
                                 </div>
                             </span>
                             <span class="number-info" id="total_paid_members_count">--</span>
@@ -21,7 +20,7 @@
                         <div class="card-body">
                             <span class="d-inline-flex">
                                 <div class="position-absolute thumbnail" style="background-color:#ff515e">
-                                    <i class="fa fa-bars icon"/>
+                                    <i class="fa fa-rupee icon"/>
                                 </div>
                             </span>
                             <span class="number-info">&#8377;
@@ -29,17 +28,17 @@
                             </span>
                         </div>
                         <hr/>
-                        <p class="card-tag">Total Collection</p>
+                        <p class="card-tag">Total Monthly Collection</p>
                     </div>
                     <div class="card col-3 box-shadow m-auto">
                         <div class="card-body">
                             <span class="d-inline-flex">
                                 <div class="position-absolute thumbnail" style="background-color:#2dc92c">
-                                    <i class="fa fa-user icon"/>
+                                    <i class="fa fa-frown-o icon"/>
                                 </div>
                             </span>
                             <span class="number-info">&#8377;
-                                <span id="">--</span>
+                                <span id="total_gym_expense">--</span>
                             </span>
                         </div>
                         <hr/>
@@ -52,7 +51,7 @@
                         <div class="card-body">
                             <span class="d-inline-flex">
                                 <div class="position-absolute thumbnail" style="background-color:#14c1f3">
-                                    <i class="fa fa-check icon"/>
+                                    <i class="fa fa-rupee icon"/>
                                 </div>
                             </span>
                             <span class="number-info">&#8377;
@@ -60,25 +59,27 @@
                             </span>
                         </div>
                         <hr/>
-                        <p class="card-tag">Monthly Collection</p>
+                        <p class="card-tag">Net Monthly Collection</p>
                     </div>
                     <div class="card col-3 box-shadow m-auto">
                         <div class="card-body">
                             <span class="d-inline-flex">
                                 <div class="position-absolute thumbnail" style="background-color:#920ad2">
-                                    <i class="fa fa-times icon"/>
+                                    <i class="fa fa-rupee icon"/>
                                 </div>
                             </span>
-                            <span class="number-info">--</span>
+                             <span class="number-info">&#8377;
+                                <span id="net_collection">--</span>
+                            </span>
                         </div>
                         <hr/>
-                        <p class="card-tag">Net Collection</p>
+                        <p class="card-tag">Net Profit or Loss</p>
                     </div>
                     <div class="card col-3 box-shadow m-auto">
                         <div class="card-body">
                             <span class="d-inline-flex">
                                 <div class="position-absolute thumbnail" style="background-color:#8a939b">
-                                    <i class="fa fa-home icon"/>
+                                    <i class="fa fa-rupee icon"/>
                                 </div>
                             </span>
                             <span class="number-info">--</span>
