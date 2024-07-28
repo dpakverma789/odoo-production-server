@@ -89,7 +89,7 @@ class GymMembers(models.Model):
     @api.model
     def get_dashboard_info(self):
         # cache variable
-        total_amount_collected = total_paid_members_count = 0
+        total_amount_collected = total_paid_members_count = net_collection = 0
         total_paid_members = self.search([('is_amount_paid', '=', True)])
         total_paid_members_count = total_paid_members.__len__()
         all_paid_members = total_paid_members
