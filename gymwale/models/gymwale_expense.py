@@ -22,6 +22,8 @@ class GymExpense(models.Model):
     other_service_bill = fields.Integer('Other Service')
     remarks = fields.Text('Remarks')
     total_expense = fields.Integer('Total Expense', compute='compute_total_expense')
+    created_by = fields.Many2one('res.users', string='Created by', default=lambda self: self.env.user)
+
 
     @api.depends('light_bill_amount', 'water_bill_amount', 'gym_hall_rent', 'other_service_bill')
     def compute_total_expense(self):

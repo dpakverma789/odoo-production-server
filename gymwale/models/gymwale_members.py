@@ -98,8 +98,7 @@ class GymMembers(models.Model):
         total_collection = sum(collection)
         total_expense_records = self.env['gymwale.expense'].search([], order='bill_from desc', limit=1)
         total_gym_expense = total_expense_records.total_expense
-        if monthly_collection and total_gym_expense:
-            net_collection = monthly_collection - total_gym_expense
+        net_collection = monthly_collection - total_gym_expense
         return {
             'total_collection': total_collection,
             'total_paid_members_count': total_paid_members_count,
@@ -107,7 +106,6 @@ class GymMembers(models.Model):
             'total_gym_expense': total_gym_expense,
             'net_collection': net_collection,
         }
-
 
     def generate_routine(self):
         routine = {}

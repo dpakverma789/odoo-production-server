@@ -14,5 +14,29 @@
             <field name="domain_force">[('created_by', '=', user.id)]</field>
             <field name="groups" eval="[(4, ref('base.group_user'))]"/>
         </record>
+        <record id="gym_expense_rule" model="ir.rule">
+            <field name="name">Gym Expense Rule</field>
+            <field name="model_id" ref="model_gymwale_expense"/>
+            <field name="domain_force">[('created_by', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        <record id="gymwale_batch_rule" model="ir.rule">
+            <field name="name">Gym Batch Rule</field>
+            <field name="model_id" ref="model_gymwale_batch"/>
+            <field name="domain_force">[('created_by', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        <record id="gymwale_membership_plan_rule" model="ir.rule">
+            <field name="name">Gym Membership Plan Rule</field>
+            <field name="model_id" ref="model_gymwale_membership_plan"/>
+            <field name="domain_force">[('created_by', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        <record id="member_measurement_rule" model="ir.rule">
+            <field name="name">Gym Member Measurement Rule</field>
+            <field name="model_id" ref="model_member_measurement"/>
+            <field name="domain_force">[('created_by', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        </record>
     </data>
 </odoo>

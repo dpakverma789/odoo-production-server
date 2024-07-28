@@ -16,3 +16,5 @@ class MemberMeasurement(models.Model):
     thigh = fields.Char('Thigh')
     measurement_date = fields.Date('Measurement Date')
     member_id = fields.Many2one('gymwale.members', string='Member')
+    created_by = fields.Many2one('res.users', string='Created by', default=lambda self: self.env.user)
+

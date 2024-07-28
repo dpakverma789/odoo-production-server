@@ -10,3 +10,5 @@ class GymMembershipPlan(models.Model):
     membership = fields.Char('Membership')
     membership_amount = fields.Integer('Membership Amount')
     membership_period = fields.Integer('Membership Period')
+    created_by = fields.Many2one('res.users', string='Created by', default=lambda self: self.env.user)
+
