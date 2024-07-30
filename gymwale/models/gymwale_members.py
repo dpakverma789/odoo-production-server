@@ -57,13 +57,13 @@ class GymMembers(models.Model):
         arg = []
         membership_plan_ids = self.env['gymwale.membership_plan'].search([])
         monthly_id = membership_plan_ids.filtered(lambda x: x.membership.lower() == 'monthly')
-        monthly_charges = monthly_id.mapped('membership_amount')[0]
+        monthly_charges = monthly_id.mapped('membership_amount')[0] if monthly_id else 0
 
         quarterly_id = membership_plan_ids.filtered(lambda x: x.membership.lower() == 'quarterly')
-        quarterly_charges = quarterly_id.mapped('membership_amount')[0]
+        quarterly_charges = quarterly_id.mapped('membership_amount')[0] if quarterly_id else 0
 
         half_yearly_id = membership_plan_ids.filtered(lambda x: x.membership.lower() == 'half yearly')
-        half_yearly_charges = half_yearly_id.mapped('membership_amount')[0]
+        half_yearly_charges = half_yearly_id.mapped('membership_amount')[0] if half_yearly_id else 0
 
         monthly_members_total = sum(
             all_paid_members.filtered(lambda x: x.amount_to_be_paid <= monthly_charges).mapped('amount_to_be_paid'))
