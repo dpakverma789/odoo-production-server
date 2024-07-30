@@ -8,12 +8,12 @@
             <tree string="gymwale_expense_tree_details" sample="1">
                 <field name="bill_from"/>
                 <field name="bill_to"/>
-                <field name="light_bill_amount"/>
-                <field name="water_bill_amount"/>
-                <field name="gym_hall_rent"/>
-                <field name="other_service_bill"/>
+                <field name="light_bill_amount" optional="hide"/>
+                <field name="water_bill_amount" optional="hide"/>
+                <field name="gym_hall_rent" optional="hide"/>
+                <field name="other_service_bill" optional="hide"/>
                 <field name="remarks" optional="hide"/>
-                <field name="total_expense"/>
+                <field name="total_expense" optional="hide"/>
             </tree>
         </field>
     </record>
@@ -33,15 +33,7 @@
                             <field name="bill_to"/>
                         </group>
                         <group>
-                            <field name="power_consume"/>
-                            <field name="power_unit_cost"/>
-                        </group>
-                        <group>
                             <field name="light_bill_amount"/>
-                        </group>
-                         <group>
-                            <field name="bottle_unit_cost"/>
-                            <field name="number_of_water_bottles"/>
                         </group>
                         <group>
                             <field name="water_bill_amount"/>
@@ -51,8 +43,8 @@
                             <field name="other_service_bill"/>
                             <field name="remarks"/>
                         </group>
-                        <group>
-                            <field name="total_expense" readonly="1"/>
+                        <group style="color:red;font-size:18px;font-weight:bold">
+                            <field name="total_expense"/>
                         </group>
                     </group>
                 </sheet>
