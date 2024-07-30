@@ -1,4 +1,5 @@
 from odoo import api, exceptions, fields, models, _
+import re
 
 
 class GymExpense(models.Model):
@@ -6,6 +7,7 @@ class GymExpense(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "GymWale Expense"
     _rec_name = 'bill_from'
+    _order = 'id desc'
 
     bill_from = fields.Date('Bill From')
     bill_to = fields.Date('Bill To')
@@ -18,19 +20,29 @@ class GymExpense(models.Model):
     bottle_unit_cost = fields.Float('Bottle Unit Cost')
     water_bill_amount = fields.Integer('Water Bill Amount', compute='compute_light_water_bill_amount')
 
-    gym_hall_rent = fields.Integer('GYM-HAll-Rent')
-    other_service_bill = fields.Integer('Other Service')
+    gym_hall_rent = fields.Integer('Gym Hall Rent')
+    other_service_bill = fields.Integer('Other Service', compute='_compute_other_service_bill')
     remarks = fields.Text('Remarks')
     total_expense = fields.Integer('Total Expense', compute='compute_total_expense')
-    created_by = fields.Many2one('res.users', string='Created by', default=lambda self: self.env.user)
+    total_expense_old = fields.Integer('Total Expense')
 
+    def _compute_other_service_bill(self):
+        for rec in self:
+            rec.other_service_bill = 0
+            if rec.remarks:
+                total = sum([int(x) for x in re.findall(r'\d+', rec.remarks)])
+                rec.other_service_bill = total if total else 0
 
     @api.depends('light_bill_amount', 'water_bill_amount', 'gym_hall_rent', 'other_service_bill')
     def compute_total_expense(self):
         bill_source = ('light_bill_amount', 'water_bill_amount', 'gym_hall_rent', 'other_service_bill')
+        dashboard = self.env['gymwale.dashboard'].search([], limit=1)
         for rec in self:
             total = [rec.mapped(i)[0] for i in bill_source]
             rec.total_expense = sum(total) if total else False
+            if rec.total_expense_old != rec.total_expense:
+                dashboard.in_balance_collection -= rec.total_expense - rec.total_expense_old
+                rec.total_expense_old = rec.total_expense
 
     @api.depends('power_consume', 'power_unit_cost', 'bottle_unit_cost', 'number_of_water_bottles')
     def compute_light_water_bill_amount(self):
