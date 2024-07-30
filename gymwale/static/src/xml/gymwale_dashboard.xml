@@ -28,7 +28,7 @@
                             </span>
                         </div>
                         <hr/>
-                        <p class="card-tag">Total Monthly Collection</p>
+                        <p class="card-tag">Monthly Collection</p>
                     </div>
                     <div class="card col-3 box-shadow m-auto">
                         <div class="card-body">
@@ -42,7 +42,7 @@
                             </span>
                         </div>
                         <hr/>
-                        <p class="card-tag">Total GYM Expense</p>
+                        <p class="card-tag">Monthly GYM Expense</p>
                     </div>
                 </div>
 
