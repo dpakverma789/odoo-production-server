@@ -8,7 +8,7 @@
                     <h1 class="text-center font-weight-bold">GymWale Membership Invoice Receipt</h1>
                     <div class="page">
                         <div class="container">
-                            <div class="text-left">
+                            <div class="text-left" style="margin-left:-80%">
                                 <!--                                <t t-if="doc.image">-->
                                 <!--                                    <img class="border mx-auto rounded border-dark"-->
                                 <!--                                         style="max-width:200px;max-height:250px"-->
