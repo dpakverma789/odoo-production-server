@@ -14,23 +14,29 @@
                 <b>Hi ${object.name},</b>
                 <br/>
                 <br/>
-                Thanks for joining Gym-Wale Gym.<br/>
+                Thanks for joining Gym-Wale Fitness Club.
+                <br/>
                 We are glad to get a chance to help you for your better health.
                 <br/>
-                Please find your membership invoice in the attachment.
-                We expect you will be our valuable long term member.
+                Please find your membership invoice receipt in the attachment.
+                We expect, you will be our valuable long term member.
                 <br/>
-                For any concern or query, feel free to reach on call, whatsapp, instagram and website.
+                For any concern or query, feel free to reach us via call, whatsapp or instagram.
                 <br/>
                 <br/>
-                Welcome to the GYM<br/>
-                Warm Regards<br/>
-                Deepak Verma<br/>
-                Mob- 7073870596 | 8955160103
+                Welcome to the GYM
                 <br/>
-                Website: <a href="https://gymwale.vercel.app/">Click here for Website Visit</a>
+                Warm Regards
+                <br/>
+                Deepak Verma ( Owner | Trainer )
+                <br/>
+                Mob- 8955160103 | 7073870596
+                <br/>
+                Whatsapp: <a href="https://wa.me/message/PCTPO6YGJE33N1">Click here for Whatsapp Chat</a>
                 <br/>
                 Instagram: <a href="https://www.instagram.com/the_gymwale/">Click here for Instagram Page</a>
+                <br/>
+                Website: <a href="https://gymwale.vercel.app/">Click here for Website Visit</a>
             </div>
         </field>
         <field name="report_template" ref="gymwale_membership_receipt"/>

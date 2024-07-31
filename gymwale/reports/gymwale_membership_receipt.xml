@@ -4,32 +4,33 @@
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
                 <t t-call="web.external_layout">
+<!--                    <div class="float-right">invoice no. <span>GWINV<t t-esc="doc.invoice_number"/></span></div>-->
                     <h1 class="text-center font-weight-bold">GymWale Membership Invoice Receipt</h1>
                     <div class="page">
                         <div class="container">
                             <div class="text-left">
-                                <t t-if="doc.image">
+                                <!--                                <t t-if="doc.image">-->
+                                <!--                                    <img class="border mx-auto rounded border-dark"-->
+                                <!--                                         style="max-width:200px;max-height:250px"-->
+                                <!--                                         t-att-src="image_data_uri(doc.image)" alt="image"/>-->
+                                <!--                                </t>-->
+                                <!--                                <t t-else="">-->
+                                <t t-if="doc.gender=='male'">
                                     <img class="border mx-auto rounded border-dark"
                                          style="max-width:200px;max-height:250px"
-                                         t-att-src="image_data_uri(doc.image)" alt="image"/>
+                                         src="/gymwale/static/images/men.jpg" alt="image"/>
                                 </t>
-                                <t t-else="">
-                                    <t t-if="doc.gender=='male'">
-                                        <img class="border mx-auto rounded border-dark"
-                                             style="max-width:200px;max-height:250px"
-                                             src="/GymWale_CRM/static/images/men.jpg" alt="image"/>
-                                    </t>
-                                    <t t-if="doc.gender=='female'">
-                                        <img class="border mx-auto rounded border-dark"
-                                             style="max-width:200px;max-height:250px"
-                                             src="/GymWale_CRM/static/images/female.jpg" alt="image"/>
-                                    </t>
-                                    <t t-if="doc.gender==False">
-                                        <img class="border mx-auto rounded border-dark"
-                                             style="max-width:200px;max-height:250px"
-                                             src="/GymWale_CRM/static/images/no-image.jpg" alt="image"/>
-                                    </t>
+                                <t t-if="doc.gender=='female'">
+                                    <img class="border mx-auto rounded border-dark"
+                                         style="max-width:200px;max-height:250px"
+                                         src="/gymwale/static/images/female.jpg" alt="image"/>
                                 </t>
+                                <t t-if="doc.gender==False">
+                                    <img class="border mx-auto rounded border-dark"
+                                         style="max-width:200px;max-height:250px"
+                                         src="/gymwale/static/images/no-image.jpg" alt="image"/>
+                                </t>
+                                <!--                                </t>-->
                             </div>
                             <br/>
                             <table class="table table-striped table-bordered">
@@ -63,7 +64,7 @@
                                             <b>Objective:</b>
                                         </th>
                                         <td>
-                                            <t t-esc="doc.objective"/>
+                                            <t t-esc="doc.objective.title()"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -71,7 +72,7 @@
                                             <b>Membership Plan:</b>
                                         </th>
                                         <td>
-                                            <t t-esc="doc.membership_plan.membership"/>
+                                            <t t-esc="doc.membership_plan_id.membership"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -88,7 +89,7 @@
                                             <b>Membership Duration:</b>
                                         </th>
                                         <td>
-                                            <t t-esc="doc.membership_plan.membership_period"/>
+                                            <t t-esc="doc.membership_plan_id.membership_period"/>
                                             <span>Days</span>
                                         </td>
                                     </tr>
@@ -117,6 +118,20 @@
                                         <td>
                                             <t t-esc="doc.state.title()"/>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <b>Batch:</b>
+                                        </th>
+                                        <t t-if="doc.batch_id">
+                                            <td>
+                                                <t t-esc="doc.batch_id.batch_name.title()"/>
+                                                |
+                                                <t t-esc="doc.batch_id.batch_starts"/>
+                                                -
+                                                <t t-esc="doc.batch_id.batch_ends"/>
+                                            </td>
+                                        </t>
                                     </tr>
                                     <t t-if="doc.remark">
                                         <tr>
@@ -212,6 +227,6 @@
         <field name="print_report_name">'%s - %s' % (object.name,"GymWale-Membership-Receipt")</field>
         <field name="binding_model_id" ref="model_gymwale_members"/>
         <field name="binding_type">report</field>
-<!--        <field name="paperformat_id" ref="gymwale.gymwale_invoice_receipt"/>-->
+        <field name="paperformat_id" ref="gymwale.gymwale_invoice_receipt"/>
     </record>
 </odoo>

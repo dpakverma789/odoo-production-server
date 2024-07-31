@@ -4,21 +4,23 @@ from datetime import timedelta, date
 from odoo.exceptions import MissingError, UserError, ValidationError, AccessError
 today_date = date.today()
 import random
+import re
+import json
 
 day = ('monday', 'tuesday', 'wednesday', 'thrusday', 'friday', 'saturday')
-workout = ['chest/biceps/forarms', 'shoulder-back/triceps', 'abs/legs/forarms',
-           'chest/abs', 'shoulder-back/legs', 'biceps/triceps/forarms']
+workout = ['chest/biceps/forearms', 'shoulder-back/triceps', 'abs/legs',
+           'chest/abs', 'shoulder-back/legs', 'biceps/triceps/forearms']
+plan = {'Monthly': 1, 'Quarterly': 3, 'Half-Yearly': 6, 'Annually': 12, 'Half-Month': 0.65}
 
 
 class GymMembers(models.Model):
     _name = "gymwale.members"
-    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "GymWale Members"
     _rec_name = "name"
-    _order = "name"
+    _order = "membership_assigned desc"
 
     serial_number = fields.Char('Serial Number')
-    image = fields.Binary("Image", copy=False)
+    # image = fields.Binary("Image", copy=False)
     name = fields.Char('Name', required=True)
     age = fields.Integer('Age')
     contact = fields.Char('Contact', required=True, copy=False)
@@ -29,26 +31,33 @@ class GymMembers(models.Model):
     emergency_contact = fields.Char('Emergency Contact', copy=False)
     emergency_contact_name = fields.Char('Emergency Person Name and Relation')
     prior_health_issue = fields.Selection([('yes', 'Yes'), ('no', 'No'), ('long', 'Long Time Ago')],
-                                          string='Any Prior Health Issue?')
+                                          string='Any Prior Health Issue?', default='no')
     objective = fields.Selection([('cardio', 'Cardio'), ('strength', 'Strength'), ('cardio-strength', 'Cardio-Strength')],
-                                string='Objective')
-    membership_plan = fields.Many2one('gymwale.membership_plan', required=True)
+                                string='Objective', default='cardio-strength')
+    membership_plan_id = fields.Many2one('gymwale.membership_plan', required=True)
     amount_to_be_paid = fields.Integer(string='Amount to be Paid')
+    amount_from_referral = fields.Integer('Referral Amount')
+    referral_amount = fields.Integer(string='Referral Discount', default=0)
     is_amount_paid = fields.Boolean(string='Is Amount Paid?', default=False)
     membership_assigned = fields.Date('Membership Assigned', required=True)
     membership_expire = fields.Date('Membership Expire')
-    batch = fields.Many2one('gymwale.batch', 'Batch')
+    batch_id = fields.Many2one('gymwale.batch', 'Batch')
     discount = fields.Integer('Discount %', default=0)
     state = fields.Selection([('registered', 'Registered'), ('paid', 'Paid'), ('expire', 'Expired')],
-                             string='Status', default='registered')
-    day_counter = fields.Integer(compute='_compute_day_counter')
-    last_cron_execute = fields.Date('Last Cron Execute')
+                             string='Membership Status', default='registered')
+    day_counter = fields.Char(compute='_compute_day_counter')
+    # last_cron_execute = fields.Date('Last Cron Execute')
     send_email = fields.Boolean('Send Email', default=True)
     measurement_ids = fields.One2many(comodel_name='member.measurement', inverse_name='member_id', string='Measurement')
     remark = fields.Char('Remark')
     active = fields.Boolean('Active', default=True)
     is_whatsapp_member = fields.Boolean('Is Whatsapp Member', default=False)
     is_member_joined = fields.Boolean('Is Member Joined', default=False)
+    follow_up = fields.Boolean('Client Follow Up', compute='_compute_follow_up')
+    registration_charges = fields.Boolean('Registration Charges', default=True)
+    block_reminder = fields.Boolean('Block Reminder', default=False)
+    to_be_return = fields.Integer('Amount To Be Return', compute='_compute_amount_to_be_return')
+    to_be_handover = fields.Integer('Amount To Be Handover')
     created_by = fields.Many2one('res.users', string='Created by', default=lambda self: self.env.user)
 
     _sql_constraints = [('contact_unique', 'unique (contact)', "Contact already exists !")]
@@ -107,7 +116,52 @@ class GymMembers(models.Model):
             'net_collection': net_collection,
         }
 
+    @api.onchange('amount_from_referral')
+    def calculate_referral_amount(self):
+        """
+        this function calculate and set referral amount.
+        :return: none
+        """
+        self._origin.referral_amount = 0
+        self._origin.referral_amount = self.amount_from_referral * 10 * 0.01
+        return
+
+    def _compute_follow_up(self):
+        """
+        this function set follow-up flag based on some computation, for the customer to follow-up them.
+        it sets True if client is not regular more than 10 days, so they can be followed up
+        :return: none
+        """
+        self.follow_up = False
+        inactive_records = self.search([('active', '=', False), ('state', '=', 'expire')])
+        for rec in inactive_records:
+            difference = today_date - rec.membership_expire
+            days = difference.days
+            rec.follow_up = True if abs(days) < 10 else False
+
+    def _compute_amount_to_be_return(self):
+        self.to_be_return = self.to_be_handover = False
+        to_be_return = 0
+        nearest_membership = {12: 6, 6: 3, 3: 1}
+        membership_months = plan[self.membership_plan_id.membership]
+        month, days, total_days = self._compute_day_counter()
+        # ----------------- Refund -------------------
+        month = month + 1 if month == 1 and days > 21 else month
+        if membership_months >= 3:
+            nearest_membership_month = nearest_membership[membership_months]
+            if nearest_membership_month == 1:
+                to_be_return = self.amount_to_be_paid - ((3 - month)*700)
+            if nearest_membership_month == 3:
+                to_be_return = self.amount_to_be_paid - ((6 - month)*600)
+            if nearest_membership_month == 6:
+                to_be_return = self.amount_to_be_paid - ((12 - month)*500)
+        self.to_be_return = to_be_return if to_be_return > 1 else False
+
     def generate_routine(self):
+        """
+        this function generate exercise routine for the customer.
+        :return: wizard
+        """
         routine = {}
         count = 6
         while count != 0:
@@ -116,12 +170,18 @@ class GymMembers(models.Model):
             if today_workout not in routine.values():
                 routine.update({day[6 - count]: today_workout})
                 count -= 1
+        routine = json.dumps(routine, indent=4)
         form_view_id = self.env.ref('gymwale.gymwale_routine_generator_wizard').id
+        self.block_reminder = True
         return {
             'name': _('Routine Generator'),
             'view_type': 'form',
             'res_model': 'gymwale.routine_generator.wizard',
-            'context': {'default_routine': routine},
+            'context': {
+                'default_routine': routine,
+                'default_member_id': self.id,
+                'default_last_date': self.membership_expire + timedelta(days=5)
+            },
             'view_id': form_view_id,
             'view_mode': 'form',
             'target': 'new',
@@ -129,11 +189,14 @@ class GymMembers(models.Model):
         }
 
     def membership_renew(self):
+        """
+        this function re-new the customer membership, so customer can re-register them-self again
+        :return: none
+        """
         self.write({
             'active': True,
             'state': 'registered',
             'discount': 0,
-            'is_member_joined': True,
             'membership_expire': None,
             'amount_to_be_paid': 0,
             'membership_assigned': today_date
@@ -168,17 +231,22 @@ class GymMembers(models.Model):
                 if unpaid.state == 'registered':
                     unpaid.unlink()
                 else:
-                    unpaid.active = False
+                    unpaid.write({
+                        'active': False,
+                        'registration_charges': True
+                    })
         for expired in expired_membership:
-            expired.write({'state': 'expire', 'is_amount_paid': False, 'last_cron_execute': today_date,
-                           'is_member_joined': False})
+            expired.write({'state': 'expire', 'is_amount_paid': False, 'is_member_joined': False,
+                           'registration_charges': False, 'send_email': False})
 
     @api.depends('membership_assigned', 'membership_expire')
     def _compute_day_counter(self):
-        self.day_counter = 0
+        self.day_counter = None
         if self.membership_expire and self.membership_assigned:
             difference = self.membership_expire - today_date
-            self.day_counter = difference.days
+            days = difference.days
+            self.day_counter = f'{days // 30} Months {days % 30} Days' if abs(days) > 30 else days
+            return days // 30, days % 30, days
 
     @api.model
     def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
@@ -198,34 +266,50 @@ class GymMembers(models.Model):
         :return:
         """
         membership_email_receipt_id = self.env.ref('gymwale.gymwale_email_receipt_template').id
-        email_send_condition = (self.email, membership_email_receipt_id, self.send_email)
+        email_send_condition = (self.email, membership_email_receipt_id, self.send_email, self.amount_to_be_paid)
         if all(email_send_condition):
-            mail_id = self.env['mail.template'].browse(membership_email_receipt_id).send_mail(self.id, force_send=True)
-            if mail_id:
-                msg = 'Invoice sent on email successfully'
-            else:
-                msg = 'Invoice sent on email failed'
-            self.message_post(body=msg)
+            self.env['mail.template'].browse(membership_email_receipt_id).send_mail(self.id, force_send=True)
         self.send_email = False
         return self.env.ref('gymwale.gymwale_membership_receipt').report_action(self)
 
     def confirm_payment(self):
-        self.write({'state': 'paid', 'is_amount_paid': True, 'is_member_joined': True})
+        self.write({'state': 'paid', 'referral_amount': 0, 'amount_from_referral': 0,
+                   'is_amount_paid': True, 'is_member_joined': True, 'send_email': True, 'block_reminder': False})
+        self.print_membership_receipt_card()
         return
 
-    @api.onchange('membership_plan', 'membership_assigned')
+    @api.onchange('membership_plan_id', 'membership_assigned')
     def compute_expiry_date(self):
         self.membership_expire = False
-        membership_period = self.membership_plan.membership_period
+        membership_period = self.membership_plan_id.membership_period
         if membership_period and self.membership_assigned:
             self.membership_expire = self.membership_assigned + timedelta(days=membership_period)
 
-    @api.onchange('membership_plan', 'discount')
+    @api.onchange('membership_plan_id', 'discount')
     def compute_price(self):
         self.amount_to_be_paid = 0
-        amount = self.membership_plan.membership_amount
+        self.batch_id = None
+        amount = self.membership_plan_id.membership_amount
+        if self.registration_charges:
+            amount += 50
         if amount:
-            self.amount_to_be_paid = amount * (100 - self.discount) * 0.01
+            pay_amount = amount * (100 - self.discount) * 0.01
+            net_pay_amount = pay_amount - self.referral_amount
+            self.amount_to_be_paid = net_pay_amount if net_pay_amount > 0 else 0
+
+    @api.onchange('batch_id')
+    def compute_common_batch_price(self):
+        """
+        this function compute the amount to be paid by customer if they opted the common batch for the gym.
+        :return: none
+        """
+        if self.batch_id:
+            if self.membership_plan_id.membership:
+                number_of_months = plan[self.membership_plan_id.membership]
+                if bool(re.search(r'\bcommon\b', self.batch_id.batch_name, re.IGNORECASE)):
+                    self.amount_to_be_paid += (number_of_months * 300)
+            else:
+                raise ValidationError('Select Membership Plan First')
 
     @api.model
     def create(self, vals):

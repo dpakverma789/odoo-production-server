@@ -7,9 +7,35 @@
         <field name="model">gymwale.routine_generator.wizard</field>
         <field name="arch" type="xml">
             <form string="gymwale_routine_generator">
-                <group>
-                    <field name="routine" readonly="1"/>
-                </group>
+                <div>
+                    Hi <span><b><field name="member_id" readonly="1"/></b></span><br/><br/>
+                    We are glad to get an opportunity to help you to improve your fitness level.
+                    <br/>But unfortunately your membership plan is expired, we request you to renew it as soon as possible
+                    to avoid registration charges<br/> So your fitness progress level get maintained
+                    without any break and additional charges.
+                    <br/><br/>
+                    Your membership expired on: <span><b><field name="membership_expire"/></b></span>,
+                    we request you to renew before <span><b><field name="last_date" readonly="1"/></b></span> to avoid registration charges.<br/><br/>
+                    For more details please checkout your gym invoice,
+                    you might received on your email or WhatsApp or feel free to contact us.
+                    <br/>Thanks you for being GymWale member
+                    <br/><br/>
+                    *Note: System Generated Reminder
+                    <br/><br/><br/>हेलो,<span><b><field name="member_id" readonly="1"/></b></span><br/><br/>
+                    हमें आपके फिटनेस स्तर को बेहतर बनाने का अवसर पाकर खुशी हुई है। लेकिन आपकी सदस्यता समाप्त हो गई है,<br/>
+                    हम आपसे अनुरोध करते हैं कि पंजीकरण शुल्क से बचने के लिए इसे जल्द से जल्द नवीनीकृत करें<br/>
+                    ताकि आपकी फिटनेस प्रगति का स्तर बिना किसी रुकावट और अतिरिक्त शुल्क के बना रहे।<br/>
+                    आपकी सदस्यता समाप्ति दिनांक हैं <span><b><field name="membership_expire"/></b></span>
+                    पंजीकरण शुल्क से बचने के लिए <span><b><field name="last_date" readonly="1"/></b></span> से पहले नवीनीकरण करने का अनुरोध करते हैं।<br/><br/>
+                    अधिक जानकारी के लिए कृपया अपना जिम चालान देखें, जो आपको आपके ईमेल या व्हाट्सएप पर प्राप्त हुआ है या बेझिझक हमसे संपर्क कर सकते हैं।
+                    <br/>
+                    जिमवाले सदस्य बनने के लिए धन्यवाद
+                    <br/><br/>
+                    *नोट: सिस्टम जनरेटेड रिमाइंडर
+                </div>
+<!--                <group>-->
+<!--                    <field name="routine" readonly="1"/>-->
+<!--                </group>-->
                 <footer>
                     <button string="OK" class="btn-secondary" special="cancel"/>
                 </footer>

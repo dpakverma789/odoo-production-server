@@ -5,7 +5,7 @@ class GymMembershipPlan(models.Model):
     _name = "gymwale.membership_plan"
     _description = "GymWale Membership Plan"
     _rec_name = "membership"
-    # _order = "membership"
+    _order = "membership_amount"
 
     membership = fields.Char('Membership')
     membership_amount = fields.Integer('Membership Amount')
