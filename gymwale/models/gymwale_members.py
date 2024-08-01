@@ -10,7 +10,7 @@ import json
 day = ('monday', 'tuesday', 'wednesday', 'thrusday', 'friday', 'saturday')
 workout = ['chest/biceps/forearms', 'shoulder-back/triceps', 'abs/legs',
            'chest/abs', 'shoulder-back/legs', 'biceps/triceps/forearms']
-plan = {'Monthly': 1, 'Quarterly': 3, 'Half-Yearly': 6, 'Annually': 12, 'Half-Month': 0.65}
+plan = {'Monthly': 1, 'Quarterly': 3, 'Half Yearly': 6, 'Annual': 12}
 
 
 class GymMembers(models.Model):

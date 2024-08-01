@@ -5,10 +5,10 @@
             <t t-foreach="docs" t-as="doc">
                 <t t-call="web.external_layout">
 <!--                    <div class="float-right">invoice no. <span>GWINV<t t-esc="doc.invoice_number"/></span></div>-->
-                    <h1 class="text-center font-weight-bold">GymWale Membership Invoice Receipt</h1>
+                    <h1 class="text-center font-weight-bold" style="font-size:15px;">GymWale Membership Invoice Receipt</h1>
                     <div class="page">
                         <div class="container">
-                            <div class="text-left" style="margin-left:-80%">
+                            <div class="text-left" style="margin-left:-50%">
                                 <!--                                <t t-if="doc.image">-->
                                 <!--                                    <img class="border mx-auto rounded border-dark"-->
                                 <!--                                         style="max-width:200px;max-height:250px"-->

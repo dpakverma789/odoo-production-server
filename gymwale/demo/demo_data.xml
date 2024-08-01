@@ -1,28 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data noupdate="1">
-        <!-- Demo Membership Plan  -->
-        <record id="monthly" model="gymwale.membership_plan">
-            <field name="membership">Monthly</field>
-            <field name="membership_amount">700</field>
-            <field name="membership_period">30</field>
-        </record>
-        <record id="quarterly" model="gymwale.membership_plan">
-            <field name="membership">Quarterly</field>
-            <field name="membership_amount">1800</field>
-            <field name="membership_period">90</field>
-        </record>
-        <record id="half_yearly" model="gymwale.membership_plan">
-            <field name="membership">Half Yearly</field>
-            <field name="membership_amount">3000</field>
-            <field name="membership_period">180</field>
-        </record>
-        <record id="annual" model="gymwale.membership_plan">
-            <field name="membership">Annual</field>
-            <field name="membership_amount">5000</field>
-            <field name="membership_period">360</field>
-        </record>
-
         <!-- Mail-Server  -->
         <record id="gymwale_outgoing_mail_server" model="ir.mail_server">
             <field name="name">Outgoing-Mail-Server</field>
@@ -31,8 +9,6 @@
             <field name="smtp_host">smtp.gmail.com</field>
             <field name="smtp_port">465</field>
             <field name="smtp_encryption">ssl</field>
-            <field name="smtp_user">dpakverma888@gmail.com</field>
-            <field name="smtp_pass">rzwpezqokuefativ</field>
         </record>
     </data>
 </odoo>
