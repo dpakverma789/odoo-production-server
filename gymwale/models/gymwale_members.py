@@ -1,6 +1,6 @@
 
 from odoo import api, exceptions, fields, models, _
-from datetime import timedelta, date
+from datetime import timedelta, date, datetime
 from odoo.exceptions import MissingError, UserError, ValidationError, AccessError
 today_date = date.today()
 import random
@@ -59,6 +59,7 @@ class GymMembers(models.Model):
     to_be_return = fields.Integer('Amount To Be Return', compute='_compute_amount_to_be_return')
     to_be_handover = fields.Integer('Amount To Be Handover')
     created_by = fields.Many2one('res.users', string='Created by', default=lambda self: self.env.user)
+    transaction_date = fields.Datetime(string='Transaction date')
 
     _sql_constraints = [('contact_unique', 'unique (contact)', "Contact already exists !")]
 
@@ -274,7 +275,8 @@ class GymMembers(models.Model):
 
     def confirm_payment(self):
         self.write({'state': 'paid', 'referral_amount': 0, 'amount_from_referral': 0,
-                   'is_amount_paid': True, 'is_member_joined': True, 'send_email': True, 'block_reminder': False})
+                   'is_amount_paid': True, 'is_member_joined': True, 'send_email': True, 'block_reminder': False,
+                    'transaction_date': datetime.now()})
         self.print_membership_receipt_card()
         return
 
@@ -291,7 +293,7 @@ class GymMembers(models.Model):
         self.batch_id = None
         amount = self.membership_plan_id.membership_amount
         if self.registration_charges:
-            amount += 50
+            amount += 0
         if amount:
             pay_amount = amount * (100 - self.discount) * 0.01
             net_pay_amount = pay_amount - self.referral_amount

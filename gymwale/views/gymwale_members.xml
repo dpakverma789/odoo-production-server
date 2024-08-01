@@ -28,6 +28,7 @@
 <!--                <field name="last_cron_execute" optional="hide"/>-->
                 <field name="remark" optional="hide"/>
                 <field name="is_whatsapp_member" optional="hide"/>
+                <field name="transaction_date" optional="hide"/>
 <!--                <button name="confirm_payment"-->
 <!--                        confirm="Sure? Member Paid the Amount!"-->
 <!--                        type="object" class="fa fa-check btn-success"-->
@@ -120,8 +121,9 @@
                         <group>
                             <field name="membership_assigned"/>
                             <field name="membership_expire" readonly="1" force_save="True"/>
+                            <field name="transaction_date" readonly="1"/>
                             <field name="batch_id" options="{'no_create': True, 'no_edit':True}"/>
-                             <field name="referral_amount" readonly="1"/>
+                            <field name="referral_amount" readonly="1"/>
                             <field name="remark"/>
                             <field name="is_member_joined" widget="boolean_toggle"/>
                         </group>
