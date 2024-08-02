@@ -121,19 +121,21 @@ class GymMembers(models.Model):
     def get_dashboard_info(self, date_filter, start_date, end_date):
         # cache variable
         total_amount_collected = total_paid_members_count = net_collection = 0
-        args = [('is_amount_paid', '=', True)]
+        gymwale_members_args = [('is_amount_paid', '=', True)]
+        gymwale_expense_agrs = []
         start_date_range = end_date_range = None
         if date_filter:
             start_date_range, end_date_range = self.get_date_filters(date_filter, start_date, end_date)
         if start_date_range and end_date_range:
-            args.extend((('transaction_date', '>=', start_date_range), ('transaction_date', '<=', end_date_range)))
-        total_paid_members = self.search(args)
+            gymwale_members_args.extend((('transaction_date', '>=', start_date_range), ('transaction_date', '<=', end_date_range)))
+            gymwale_expense_agrs.extend((('bill_from', '>=', start_date_range), ('bill_to', '<=', end_date_range)))
+        total_paid_members = self.search(gymwale_members_args)
         total_paid_members_count = total_paid_members.__len__()
         all_paid_members = total_paid_members
         monthly_collection = self.get_monthly_collection(all_paid_members)
         collection = total_paid_members.mapped('amount_to_be_paid')
         total_collection = sum(collection)
-        total_expense_records = self.env['gymwale.expense'].search([], order='bill_from desc', limit=1)
+        total_expense_records = self.env['gymwale.expense'].search(gymwale_expense_agrs, order='bill_from desc', limit=1)
         total_gym_expense = total_expense_records.total_expense
         net_collection = monthly_collection - total_gym_expense
         return {
