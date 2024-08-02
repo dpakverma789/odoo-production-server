@@ -20,15 +20,20 @@
 }
 
 .card-tag{
-    font-size:12px;
+    font-size:15px;
     font-weight:bold;
 }
 
 .box-shadow{
-    box-shadow: 2px 2px 5px -2px black;
+    box-shadow: 0px 5px 12px -3px black;
 }
 
 .o_optional_columns_dropdown{
     overflow: scroll !important;
     max-height: 70vh !important;
+}
+
+.card{
+    border-radius: 15px;
+    height: 11rem;
 }
