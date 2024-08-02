@@ -121,9 +121,13 @@ class GymMembers(models.Model):
     def get_dashboard_info(self, date_filter, start_date, end_date):
         # cache variable
         total_amount_collected = total_paid_members_count = net_collection = 0
+        args = [('is_amount_paid', '=', True)]
+        start_date_range = end_date_range = None
         if date_filter:
-            start_date, end_date = self.get_date_filters(date_filter, start_date, end_date)
-        total_paid_members = self.search([('is_amount_paid', '=', True)])
+            start_date_range, end_date_range = self.get_date_filters(date_filter, start_date, end_date)
+        if start_date_range and end_date_range:
+            args.extend((('transaction_date', '>=', start_date_range), ('transaction_date', '<=', end_date_range)))
+        total_paid_members = self.search(args)
         total_paid_members_count = total_paid_members.__len__()
         all_paid_members = total_paid_members
         monthly_collection = self.get_monthly_collection(all_paid_members)

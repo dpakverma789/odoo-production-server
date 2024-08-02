@@ -6,13 +6,9 @@
                 <div class="filter-controls">
                     <select  id="date_filter" style="width:20rem;">
                         <option value="" selected="selected">Please choose an option</option>
-
                         <option value="this_month">This Month</option>
-
                         <option value="last_month">Last Month</option>
-
                         <option value="3_months">Last 3 Months</option>
-
                         <option value="custom_range">Custom Date Range</option>
                     </select>
                     <div id="custom_range_controls" style="display: none;">
@@ -93,16 +89,16 @@
                         <p class="card-tag">Net Profit or Loss</p>
                     </div>
                     <div class="card col-3 box-shadow m-auto">
-                        <div class="card-body">
-                            <span class="d-inline-flex">
-                                <div class="position-absolute thumbnail" style="background-color:#8a939b">
-                                    <i class="fa fa-rupee icon"/>
-                                </div>
-                            </span>
-                            <span class="number-info">--</span>
-                        </div>
-                        <hr/>
-                        <p class="card-tag">--</p>
+<!--                        <div class="card-body">-->
+<!--                            <span class="d-inline-flex">-->
+<!--                                <div class="position-absolute thumbnail" style="background-color:#8a939b">-->
+<!--                                    <i class="fa fa-rupee icon"/>-->
+<!--                                </div>-->
+<!--                            </span>-->
+<!--                            <span class="number-info">&#45;&#45;</span>-->
+<!--                        </div>-->
+<!--                        <hr/>-->
+<!--                        <p class="card-tag">&#45;&#45;</p>-->
                     </div>
                 </div>
             </div>
