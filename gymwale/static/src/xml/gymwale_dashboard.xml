@@ -3,9 +3,23 @@
     <t t-name="gymwale_dashboard_template">
         <div class="container-fluid mt-4 o_dashboard">
             <div class="card mx-5 mt-5">
-                <div class="m-5">
-                    <input type="date" name="start-date"/>
-                    <input type="date" name="end-date"/>
+                <div class="filter-controls">
+                    <select  id="date_filter" style="width:20rem;">
+                        <option value="" selected="selected">Please choose an option</option>
+
+                        <option value="this_month">This Month</option>
+
+                        <option value="last_month">Last Month</option>
+
+                        <option value="3_months">Last 3 Months</option>
+
+                        <option value="custom_range">Custom Date Range</option>
+                    </select>
+                    <div id="custom_range_controls" style="display: none;">
+                        <input type="date" id="start_date" style="height:34px"/>
+                        <input type="date" id="end_date" style="height:34px"/>
+                    </div>
+                    <button id="apply_filter">Apply Filter</button>
                 </div>
                 <div class="card-body d-inline-flex">
                     <div class="card col-3 box-shadow m-auto">
@@ -49,7 +63,6 @@
                         <p class="card-tag">Monthly GYM Expense</p>
                     </div>
                 </div>
-
                 <div class="card-body d-inline-flex">
                     <div class="card col-3 box-shadow m-auto">
                         <div class="card-body">
@@ -72,7 +85,7 @@
                                     <i class="fa fa-rupee icon"/>
                                 </div>
                             </span>
-                             <span class="number-info">&#8377;
+                            <span class="number-info">&#8377;
                                 <span id="net_collection">--</span>
                             </span>
                         </div>

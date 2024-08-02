@@ -4,6 +4,7 @@ odoo.define('gymwale.dashboard', function (require) {
     const AbstractAction = require('web.AbstractAction');
     const core = require('web.core');
     const QWeb = core.qweb;
+    const session = require('web.session');  // For date and timezone management
 
     const GymwaleDashboard = AbstractAction.extend({
         template: 'gymwale_dashboard_template',
@@ -11,12 +12,16 @@ odoo.define('gymwale.dashboard', function (require) {
         init: function (parent, context) {
             this._super(parent, context);
             this.dashboardData = {};
+            this.dateFilter = '';  // Default filter
+            this.startDate = null;
+            this.endDate = null;
             console.log("Dashboard initialized");
         },
 
         start: function () {
             var self = this;
             console.log("Fetching dashboard data...");
+            this._bindEvents();
             this._fetchDashboardData().then(function () {
                 console.log("Data fetched:", self.dashboardData);
                 self._renderDashboard();
@@ -24,12 +29,46 @@ odoo.define('gymwale.dashboard', function (require) {
             return this._super();
         },
 
+        _bindEvents: function () {
+            var self = this;
+
+            this.$('#date_filter').on('change', function () {
+                self.dateFilter = $(this).val();
+                self._updateDateControls();
+            });
+
+            this.$('#apply_filter').on('click', function () {
+                self.startDate = self.$('#start_date').val();
+                self.endDate = self.$('#end_date').val();
+                self._fetchDashboardData().then(function () {
+                    self._renderDashboard();
+                });
+            });
+
+            this.$('#start_date, #end_date').on('change', function () {
+                if (self.dateFilter === 'custom_range') {
+                    self.startDate = self.$('#start_date').val();
+                    self.endDate = self.$('#end_date').val();
+                }
+            });
+        },
+
+        _updateDateControls: function () {
+            if (this.dateFilter === 'custom_range') {
+                this.$('#custom_range_controls').show();
+            } else {
+                this.$('#custom_range_controls').hide();
+                this.startDate = null;
+                this.endDate = null;
+            }
+        },
+
         _fetchDashboardData: function () {
             var self = this;
             return this._rpc({
                 model: 'gymwale.members',
                 method: 'get_dashboard_info',
-                args: [],
+                args: [self.dateFilter, self.startDate, self.endDate],
             }).then(function (result) {
                 self.dashboardData = result;
                 console.log("Dashboard data received:", result);

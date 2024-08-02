@@ -96,10 +96,33 @@ class GymMembers(models.Model):
         monthly_collection = sum(arg) if arg else 0
         return monthly_collection
 
+    @staticmethod
+    def get_date_filters(date_filter, start_date=None, end_date=None):
+        if date_filter == 'this_month':
+            start_date = datetime.today().replace(day=1).date()
+            end_date = (start_date + timedelta(days=31)).replace(day=1) - timedelta(days=1)
+        elif date_filter == 'last_month':
+            first_day_of_current_month = datetime.today().replace(day=1)
+            end_date = first_day_of_current_month - timedelta(days=1)
+            start_date = end_date.replace(day=1)
+        elif date_filter == '3_months':
+            end_date = datetime.today().date()
+            start_date = end_date - timedelta(days=90)
+        elif date_filter == 'custom_range' and start_date and end_date:
+            start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+            end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+        else:
+            # Default to some date range if needed
+            start_date = datetime.today().replace(day=1).date()
+            end_date = datetime.today().date()
+        return start_date, end_date
+
     @api.model
-    def get_dashboard_info(self):
+    def get_dashboard_info(self, date_filter, start_date, end_date):
         # cache variable
         total_amount_collected = total_paid_members_count = net_collection = 0
+        if date_filter:
+            start_date, end_date = self.get_date_filters(date_filter, start_date, end_date)
         total_paid_members = self.search([('is_amount_paid', '=', True)])
         total_paid_members_count = total_paid_members.__len__()
         all_paid_members = total_paid_members

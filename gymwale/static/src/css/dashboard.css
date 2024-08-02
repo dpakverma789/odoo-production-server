@@ -35,5 +35,29 @@
 
 .card{
     border-radius: 15px;
-    height: 11rem;
+}
+
+.filter-controls{
+    display: inline-flex;
+    gap: 5px;
+    max-width: fit-content;
+    margin: 15px 0px 15px 7rem;
+}
+
+#apply_filter{
+    border-radius: 12px;
+    background-color: #71639e;
+    padding: 5px;
+    border: 2px solid #71639e;
+    color: #fff;
+    font-weight: bold;
+}
+
+#custom_range_controls{
+    max-width: fit-content;
+}
+
+option{
+    font-size: 15px;
+    margin: 5px;
 }
