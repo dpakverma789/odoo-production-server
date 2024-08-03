@@ -56,7 +56,7 @@
                             </span>
                         </div>
                         <hr/>
-                        <p class="card-tag">Monthly GYM Expense</p>
+                        <p class="card-tag">Monthly Expense</p>
                     </div>
                 </div>
                 <div class="card-body d-inline-flex">
@@ -72,7 +72,7 @@
                             </span>
                         </div>
                         <hr/>
-                        <p class="card-tag">Net Monthly Collection</p>
+                        <p class="card-tag">Net Revenue</p>
                     </div>
                     <div class="card col-3 box-shadow m-auto">
                         <div class="card-body">
