@@ -61,3 +61,8 @@ option{
     font-size: 15px;
     margin: 5px;
 }
+#paid_members_chart{
+    height: 450px !important;
+    width: 1150px !important;
+    margin: 0 auto;
+}

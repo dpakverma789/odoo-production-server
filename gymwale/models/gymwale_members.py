@@ -2,10 +2,13 @@
 from odoo import api, exceptions, fields, models, _
 from datetime import timedelta, date, datetime
 from odoo.exceptions import MissingError, UserError, ValidationError, AccessError
+from collections import defaultdict
 today_date = date.today()
 import random
 import re
 import json
+import calendar
+
 
 day = ('monday', 'tuesday', 'wednesday', 'thrusday', 'friday', 'saturday')
 workout = ['chest/biceps/forearms', 'shoulder-back/triceps', 'abs/legs',
@@ -118,6 +121,26 @@ class GymMembers(models.Model):
         return start_date, end_date
 
     @api.model
+    def get_monthly_paid_members(self):
+        current_year = datetime.now().year
+        months = list(calendar.month_name[1:])
+        monthly_counts = defaultdict(int)
+
+        members = self.search([
+            ('transaction_date', '>=', f"{current_year}-01-01 00:00:00"),
+            ('transaction_date', '<=', f"{current_year}-12-31 23:59:59"),
+            ('is_amount_paid', '=', True),
+        ])
+
+        for member in members:
+            month = member.transaction_date.month
+            monthly_counts[month] += 1
+
+        values = [monthly_counts.get(month, 0) for month in range(1, 13)]
+
+        return months, values
+
+    @api.model
     def get_dashboard_info(self, date_filter, start_date, end_date):
         # cache variable
         total_amount_collected = total_paid_members_count = net_collection = 0
@@ -133,6 +156,7 @@ class GymMembers(models.Model):
         total_paid_members_count = total_paid_members.__len__()
         all_paid_members = total_paid_members
         monthly_collection = self.get_monthly_collection(all_paid_members)
+        months, values = self.get_monthly_paid_members()
         collection = total_paid_members.mapped('amount_to_be_paid')
         total_collection = sum(collection)
         total_expense_records = self.env['gymwale.expense'].search(gymwale_expense_agrs, order='bill_from desc', limit=1)
@@ -144,6 +168,8 @@ class GymMembers(models.Model):
             'monthly_collection': monthly_collection,
             'total_gym_expense': total_gym_expense,
             'net_collection': net_collection,
+            'months': months,
+            'values': values,
         }
 
     @api.onchange('amount_from_referral')

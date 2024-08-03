@@ -4,10 +4,13 @@ odoo.define('gymwale.dashboard', function (require) {
     const AbstractAction = require('web.AbstractAction');
     const core = require('web.core');
     const QWeb = core.qweb;
-    const session = require('web.session');  // For date and timezone management
+    const session = require('web.session');
+    const _t = core._t;
+
 
     const GymwaleDashboard = AbstractAction.extend({
         template: 'gymwale_dashboard_template',
+        jsLibs: ['/web/static/lib/Chart/Chart.js'],
 
         init: function (parent, context) {
             this._super(parent, context);
@@ -25,6 +28,7 @@ odoo.define('gymwale.dashboard', function (require) {
             this._fetchDashboardData().then(function () {
                 console.log("Data fetched:", self.dashboardData);
                 self._renderDashboard();
+                self._renderChart();
             });
             return this._super();
         },
@@ -42,6 +46,7 @@ odoo.define('gymwale.dashboard', function (require) {
                 self.endDate = self.$('#end_date').val();
                 self._fetchDashboardData().then(function () {
                     self._renderDashboard();
+                    self._renderChart();
                 });
             });
 
@@ -90,6 +95,40 @@ odoo.define('gymwale.dashboard', function (require) {
             $total_gym_expense.text(this.dashboardData.total_gym_expense || 0);
             $net_collection.text(this.dashboardData.net_collection || 0);
             console.log("Dashboard rendered");
+        },
+
+        _renderChart: function () {
+            const ctx = this.$('#paid_members_chart')[0].getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: this.dashboardData.months || [],
+                    datasets: [{
+                        label: _t('Paid Members'),
+                        data: this.dashboardData.values || [],
+                        borderColor: '#000',
+                        backgroundColor: '#ffa500',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: _t('Months')
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: _t('Number of Members')
+                            }
+                        }
+                    }
+                }
+            });
         },
     });
 
