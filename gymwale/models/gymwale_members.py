@@ -70,24 +70,13 @@ class GymMembers(models.Model):
         arg = []
         membership_plan_ids = self.env['gymwale.membership_plan'].search([])
         monthly_id = membership_plan_ids.filtered(lambda x: x.membership.lower() == 'monthly')
-        monthly_charges = monthly_id.mapped('membership_amount')[0] if monthly_id else 0
-
         quarterly_id = membership_plan_ids.filtered(lambda x: x.membership.lower() == 'quarterly')
-        quarterly_charges = quarterly_id.mapped('membership_amount')[0] if quarterly_id else 0
-
         half_yearly_id = membership_plan_ids.filtered(lambda x: x.membership.lower() == 'half yearly')
-        half_yearly_charges = half_yearly_id.mapped('membership_amount')[0] if half_yearly_id else 0
-
-        monthly_members_total = sum(
-            all_paid_members.filtered(lambda x: x.amount_to_be_paid <= monthly_charges).mapped('amount_to_be_paid'))
-        quarterly_members_total = sum(
-            all_paid_members.filtered(lambda x: monthly_charges < x.amount_to_be_paid <= quarterly_charges).mapped(
-                'amount_to_be_paid'))
-        half_yearly_members_total = sum(
-            all_paid_members.filtered(lambda x: quarterly_charges < x.amount_to_be_paid <= half_yearly_charges).mapped(
-                'amount_to_be_paid'))
-        annual_members_total = sum(
-            all_paid_members.filtered(lambda x: half_yearly_charges < x.amount_to_be_paid).mapped('amount_to_be_paid'))
+        annual_id = membership_plan_ids.filtered(lambda x: x.membership.lower() == 'annual')
+        monthly_members_total = sum(all_paid_members.filtered(lambda x: x.membership_plan_id.id == monthly_id.id).mapped('amount_to_be_paid'))
+        quarterly_members_total = sum(all_paid_members.filtered(lambda x: x.membership_plan_id.id == quarterly_id.id).mapped('amount_to_be_paid'))
+        half_yearly_members_total = sum(all_paid_members.filtered(lambda x: x.membership_plan_id.id == half_yearly_id.id).mapped('amount_to_be_paid'))
+        annual_members_total = sum(all_paid_members.filtered(lambda x: x.membership_plan_id.id == annual_id.id).mapped('amount_to_be_paid'))
         if monthly_members_total:
             arg.append(monthly_members_total)
         if quarterly_members_total:

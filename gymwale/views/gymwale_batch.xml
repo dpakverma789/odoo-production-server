@@ -22,9 +22,9 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="batch_name"/>
-                            <field name="batch_starts"/>
-                            <field name="batch_ends"/>
+                            <field name="batch_name" required="1"/>
+                            <field name="batch_starts" placeholder="eg: 6AM"/>
+                            <field name="batch_ends" placeholder="eg: 11AM"/>
                         </group>
                     </group>
                 </sheet>

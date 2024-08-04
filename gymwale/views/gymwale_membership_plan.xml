@@ -22,9 +22,9 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="membership"/>
-                            <field name="membership_amount"/>
-                            <field name="membership_period"/>
+                            <field name="membership" required="1"/>
+                            <field name="membership_amount" required="1"/>
+                            <field name="membership_period" required="1" help="eg: 30"/>
                         </group>
                     </group>
                 </sheet>

@@ -19,6 +19,9 @@ class GymExpense(models.Model):
     total_expense = fields.Integer('Total Expense', compute='compute_total_expense')
     created_by = fields.Many2one('res.users', string='Created by', default=lambda self: self.env.user)
 
+    _sql_constraints = [('unique_bill_from', 'unique (bill_from)', "Expense already created for this FROM date !"),
+                        ('unique_bill_to', 'unique (bill_to)', "Expense already created for this TO date !")]
+
     def _compute_other_service_bill(self):
         for rec in self:
             rec.other_service_bill = 0

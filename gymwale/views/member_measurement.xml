@@ -28,7 +28,7 @@
                     <group>
                         <group>
                             <field name="member_id"/>
-                            <field name="measurement_date"/>
+                            <field name="measurement_date" required="1"/>
                             <field name="height"/>
                             <field name="weight"/>
                             <field name="shoulder"/>
