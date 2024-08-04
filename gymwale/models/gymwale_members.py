@@ -125,19 +125,15 @@ class GymMembers(models.Model):
         current_year = datetime.now().year
         months = list(calendar.month_name[1:])
         monthly_counts = defaultdict(int)
-
         members = self.search([
             ('transaction_date', '>=', f"{current_year}-01-01 00:00:00"),
             ('transaction_date', '<=', f"{current_year}-12-31 23:59:59"),
             ('is_amount_paid', '=', True),
         ])
-
         for member in members:
             month = member.transaction_date.month
             monthly_counts[month] += 1
-
         values = [monthly_counts.get(month, 0) for month in range(1, 13)]
-
         return months, values
 
     @api.model
