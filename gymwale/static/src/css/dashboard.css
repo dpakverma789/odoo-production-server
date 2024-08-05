@@ -62,7 +62,7 @@ option{
     margin: 5px;
 }
 #paid_members_chart{
-    height: 450px !important;
-    width: 1150px !important;
+    height: max-content !important;
+    width: 75vw !important;
     margin: 0 auto;
 }
