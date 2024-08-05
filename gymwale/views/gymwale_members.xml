@@ -86,9 +86,9 @@
                         <div class="font-weight-bold">
                             Days Left: <field name="day_counter"/>
                         </div>
-<!--                        <div class="font-weight-bold">-->
-<!--                            Refund: <field name="to_be_return"/>-->
-<!--                        </div>-->
+                        <div class="font-weight-bold">
+                            Refund: <field name="to_be_return"/>
+                        </div>
                     </div>
                     <group string="Personal Information">
                         <group>

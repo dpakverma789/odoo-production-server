@@ -60,7 +60,6 @@ class GymMembers(models.Model):
     registration_charges = fields.Boolean('Registration Charges', default=True)
     block_reminder = fields.Boolean('Block Reminder', default=False)
     to_be_return = fields.Integer('Amount To Be Return', compute='_compute_amount_to_be_return')
-    to_be_handover = fields.Integer('Amount To Be Handover')
     created_by = fields.Many2one('res.users', string='Created by', default=lambda self: self.env.user)
     transaction_date = fields.Datetime(string='Transaction date')
 
@@ -181,21 +180,25 @@ class GymMembers(models.Model):
             rec.follow_up = True if abs(days) < 10 else False
 
     def _compute_amount_to_be_return(self):
-        self.to_be_return = self.to_be_handover = False
+        self.to_be_return = False
         to_be_return = 0
         nearest_membership = {12: 6, 6: 3, 3: 1}
-        membership_months = plan[self.membership_plan_id.membership]
-        month, days, total_days = self._compute_day_counter()
-        # ----------------- Refund -------------------
-        month = month + 1 if month == 1 and days > 21 else month
-        if membership_months >= 3:
-            nearest_membership_month = nearest_membership[membership_months]
-            if nearest_membership_month == 1:
-                to_be_return = self.amount_to_be_paid - ((3 - month)*700)
-            if nearest_membership_month == 3:
-                to_be_return = self.amount_to_be_paid - ((6 - month)*600)
-            if nearest_membership_month == 6:
-                to_be_return = self.amount_to_be_paid - ((12 - month)*500)
+        if self.state == 'paid':
+            membership_plan_ids = self.env['gymwale.membership_plan'].search([])
+            monthly_amount = membership_plan_ids.filtered(lambda x: x.membership.lower() == 'monthly').membership_amount
+            quarterly_amount = membership_plan_ids.filtered(lambda x: x.membership.lower() == 'quarterly').membership_amount
+            half_yearly_amount = membership_plan_ids.filtered(lambda x: x.membership.lower() == 'half yearly').membership_amount
+            membership_months = plan[self.membership_plan_id.membership]
+            month, days, total_days = self._compute_day_counter()
+            month = month + 1 if month == 1 and days > 21 else month
+            if membership_months >= 3:
+                nearest_membership_month = nearest_membership[membership_months]
+                if nearest_membership_month == 1:
+                    to_be_return = self.amount_to_be_paid - ((3 - month)*monthly_amount)
+                if nearest_membership_month == 3:
+                    to_be_return = self.amount_to_be_paid - ((6 - month)*quarterly_amount)
+                if nearest_membership_month == 6:
+                    to_be_return = self.amount_to_be_paid - ((12 - month)*half_yearly_amount)
         self.to_be_return = to_be_return if to_be_return > 1 else False
 
     def generate_routine(self):
