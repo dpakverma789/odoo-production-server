@@ -13,7 +13,7 @@ class GymMembershipPlan(models.Model):
     membership_period = fields.Integer('Membership Period (in days)')
     created_by = fields.Many2one('res.users', string='Created by', default=lambda self: self.env.user)
 
-    _sql_constraints = [('unique_membership', 'unique (membership)', "Membership Plan already exists !"),
+    _sql_constraints = [('unique_membership_create', 'unique (membership, created_by)', "Membership Plan already exists !"),
                         ('unique_amount', 'CHECK(membership_amount>0)', "Membership Amount Can not be Zero !"),
                         ('unique_period', 'CHECK(membership_period>0)', "Membership Period Can not be Zero !")]
 
